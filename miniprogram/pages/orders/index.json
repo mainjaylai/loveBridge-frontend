@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "empty-page": "/components/empty/index"
+  },
+  "navigationBarTitleText": "订单列表",
+  "enablePullDownRefresh": true
+}

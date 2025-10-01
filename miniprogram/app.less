@@ -1,0 +1,410 @@
+/**app.wxss**/
+@import './styles/iconfont.less';
+
+page {
+  font-size: @fs-3;
+}
+
+// 颜色
+@green-color: #79F138;
+@black-color: #222222;
+@pink-color: #FE4CD3;
+@yellow-color: #FFE94D;
+@bg-gray-color: #f1f2f5;
+@bg-gray-color-2: #f2f4f7;
+@blue-color: #10A9FF;
+@border-gray-color: #E4E4E4;
+// @purple-color: #8A62FF;
+
+// 字号
+@fs-1: 36rpx;
+@fs-2: 32rpx;
+@fs-3: 30rpx;
+@fs-4: 26rpx;
+@fs-5: 20rpx;
+
+// 字色
+@fc-gray1: #666666;
+@fc-gray2: #888888;
+@fc-gray3: #BDBDBD;
+
+// 文字溢出
+.text-ellipsis {
+  white-space: nowrap;      /* 禁止换行 */
+  overflow: hidden;        /* 隐藏超出部分 */
+  text-overflow: ellipsis; /* 显示省略号 */
+  width: 100%;            /* 必须设置宽度，但这个不会生效 */
+}
+
+// button
+.primary-button {
+  background: @green-color;
+  border-radius: 200rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px @green-color solid;
+}
+.secondary-button {
+  border-radius: 200rpx;
+  border: 1px @black-color solid;
+  text-align: center;
+}
+.gradient-button {
+  background: linear-gradient(342deg, #79F138 0%, #FFE94D 100%);
+  border-radius: 160rpx;
+}
+
+// 弃用
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// 全局通用样式-----------------------------------------------------------------
+// 在活动列表、详情、订单等多处使用的白色卡片的基本样式
+.base-card-new {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.01);
+
+  .base-card-title {
+    font-weight: 600;
+    line-height: 1.5;
+  }
+}
+// 横向分割线
+.horizontal-divider {
+  border-top: 1rpx solid rgba(34, 34, 34, 0.12);
+}
+// 页面底部的空白
+.page-bottom-space {
+  margin: 0 40rpx;
+  padding-bottom: 96px;
+  // border-top: 1px solid #E4E4E4;
+}
+// 多个页面的最外层盒子
+.page-main {
+  min-height: 100vh;
+  background-color: @bg-gray-color;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+// --------------------------------------------------------------------------------
+// 时间标签和活动名称
+.activity-title-row {
+  margin-bottom: 4rpx;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .activity-duration {
+    border-radius: 10rpx 10rpx 0 10rpx; 
+    background: @black-color;
+    color: @green-color;
+    font-size: @fs-5;
+    font-weight: 600;
+    width: 64rpx;
+    height: 36rpx;
+    margin-right: 12rpx;
+  }
+  .activity-name {
+    flex: 1;
+    font-size: @fs-1;
+    font-weight: 600;
+    width: 100rpx;
+  }
+}
+// 活动描述
+.activity-description {
+  font-size: @fs-4;
+  color: @fc-gray2;
+}
+// 底部弹窗通用样式
+.bottom-popup-container {
+  .title-row {
+    padding: 32rpx;
+    font-size: @fs-2;
+    color: #1A1A1A;
+    font-weight: 600;
+    text-align: center;
+  }
+  .content {
+    max-height: 60vh;
+    overflow-y: scroll;
+    padding: 0 32rpx 100rpx 32rpx;
+  }
+}
+// 金额通用样式
+.money {
+  // font-family: DIN Black;
+  font-weight: 900;
+  .yuan {
+    font-size: @fs-3;
+    line-height: 1.5
+  }
+  .amount {
+    font-size: 36rpx;
+  }
+}
+// 订单、确认订单页面的个人信息卡
+.people-card-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .avatar-box {
+    margin-right: 24rpx;
+    position: relative;
+    width: 80rpx;
+    height: 80rpx;
+    .avatar {
+      width: 80rpx;
+      height: 80rpx;
+      border-radius: 100%;
+    }
+    .icon-box {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 28rpx;
+      height: 28rpx;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .icon {
+        width: 24rpx;
+        height: 24rpx;
+      }
+    }
+    .man {
+      background-color: @blue-color;
+    }
+    .woman {
+      background-color: @pink-color;
+    }
+  }
+  .base-info-box {
+    flex: 1;
+    .nickname-row {
+      margin-bottom: 2rpx;
+      .nickname {
+        font-weight: 600;
+        margin-right: 8rpx;
+      }
+      .university {
+        font-size: @fs-4;
+      }
+    }
+    .real-row {
+      font-size: @fs-4;
+      color: @fc-gray2;
+      .item {
+        margin-right: 8rpx;
+      }
+    }
+  }
+}
+// --------------------------------- 社交板块通用样式 -----------------------------------
+// 帖子顶部的用户信息行
+.social-user-box {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  .avatar-box {
+    margin-right: 16rpx;
+    position: relative;
+    width: 80rpx;
+    height: 80rpx;
+    .avatar {
+      width: 80rpx;
+      height: 80rpx;
+      border-radius: 100%;
+    }
+    .icon-box {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 28rpx;
+      height: 28rpx;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .icon {
+        width: 24rpx;
+        height: 24rpx;
+      }
+    }
+    .man {
+      background-color: @blue-color;
+    }
+    .woman {
+      background-color: @pink-color;
+    }
+  }
+  .base-info-box {
+    flex: 1;
+    .nickname-row {
+      margin-bottom: 4rpx;
+      .nickname {
+        font-weight: 600;
+        font-size: 28rpx;
+        line-height: 40rpx;
+        margin-right: 8rpx;
+      }
+    }
+    .real-row {
+      font-size: 24rpx;
+      line-height: 34rpx;
+      color: @fc-gray2;
+      .item {
+        margin-right: 8rpx;
+      }
+    }
+  }
+}
+.social-content-box {
+  padding-top: 16rpx;
+  .content {
+    line-height: 48rpx;
+    margin-bottom: 16rpx;
+    text-align: justify;
+    // max-height: 192rpx;
+    overflow: hidden;
+    .tag {
+      color: @green-color;
+    }
+  }
+  .images {
+    margin-bottom: 16rpx;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px; /* 图片之间的间距 */
+
+    /* 只有一张图时的样式 */
+    .image-container.single {
+      overflow: hidden;
+      position: relative;
+      background-color: #f0f0f0; /* 背景色 */
+      width: calc(66.66% - 1.32px); /* 最大宽度 */
+      max-height: 56.25%; /* 最大高度 */
+      padding-top: calc(37.5% - 0.7425px); /* 16:9 的宽高比，可以根据需要调整 */
+    }
+
+    .image-container.single .image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 按比例放大/缩小并裁切 */
+      border-radius: 8rpx;
+    }
+
+    /* 2 或 4 张图时的样式 */
+    .image-container.double {
+      overflow: hidden;
+      width: calc(33.33% - 4.66px); /* 每行两张图，减去间距 */
+      aspect-ratio: 1; /* 正方形 */
+      .image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 按比例放大/缩小并裁切 */
+        border-radius: 8rpx;
+      }
+    }
+
+    /* 其他情况（3 张图或更多） */
+    .image-container.triple {
+      overflow: hidden;
+      width: calc(33.33% - 4.66px); /* 每行三张图，减去间距 */
+      aspect-ratio: 1; /* 正方形 */
+      .image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 按比例放大/缩小并裁切 */
+        border-radius: 8rpx;
+      }
+    }
+  }
+  .time-address-box {
+    padding-top: 12rpx;
+    font-size: 24rpx;
+    line-height: 34rpx;
+    color: @fc-gray2;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .address {
+      margin-left: 8rpx;
+      color: @green-color;
+    }
+  }
+}
+// -------------------------------------------------------------------------------------
+.van-cell__title {
+  // font-family: 'PingFang SC', sans-serif !important;
+  font-size: @fs-3;
+  color: @black-color;
+}
+.van-cell-group__title {
+  color: @fc-gray2 !important;
+  font-size: @fs-4 !important;
+  line-height: 1.5 !important;
+  padding: 10rpx 32rpx !important;
+}
+.van-submit-bar__price {
+  color: @black-color !important;
+  font-weight: 600 !important;
+}
+.van-submit-bar__button {
+  width: 152rpx !important;
+  height: 64rpx !important;
+  .van-button {
+    height: 64rpx !important;
+    line-height: 1 !important;
+  }
+}
+.van-submit-bar__tip {
+  padding: 20rpx 24rpx 16rpx 24rpx !important;
+  font-size: 28rpx !important;
+  color: @black-color !important;
+  background-color: rgba(254, 76, 211, 0.3) !important;
+  .van-submit-bar__tip-text {
+    vertical-align: baseline;
+  }
+}
+.van-button {
+  // font-family: 'PingFang SC', sans-serif !important;
+  border: none !important;
+  background-color: @green-color !important;
+  font-size: 28rpx !important;
+  color: @black-color !important;
+  font-weight: 600 !important;
+}
+.van-cell {
+  padding: 32rpx !important;
+  font-size: 30rpx !important;
+  color: @black-color;
+}
+.van-field {
+  padding: 0 !important;
+}
+.van-uploader {
+  vertical-align: middle;
+}
+.van-uploader__upload {
+  margin: 0 !important;
+  width: 108rpx !important;
+  height: 108rpx !important;
+}
+
+.van-tabs__line {
+  background-color: @green-color !important;
+}
+.van-radio {
+  align-items: flex-start !important;
+}

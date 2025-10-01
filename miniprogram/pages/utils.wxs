@@ -1,0 +1,32 @@
+// 判断对象数组arr中，有没有符合条件的元素，条件是key值为指定的value
+function includesObjKey(arr, key, value) {
+  return arr.some(function(item){
+    return item[key] === value
+  })
+}
+
+// 判断字符串数组arr中，有没有等值元素
+function includesStr(arr, value) {
+  return arr.indexOf(value) > -1;
+}
+
+/**
+ * 价格计算
+ * @param a number 单位分
+ * @param b undefined | number 单位元
+ * @return 返回a-b*100的结果和0中大的那个
+ */
+// 
+
+function subtraction(a, b) {
+  if (b) {
+    return Math.max(a - b*100 , 0);
+  }
+  return a;
+}
+
+module.exports = {
+  includesObjKey: includesObjKey,
+  includesStr: includesStr,
+  subtraction: subtraction
+}

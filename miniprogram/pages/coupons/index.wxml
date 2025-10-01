@@ -1,0 +1,45 @@
+<view class="main">
+  <!-- 顶部导航 -->
+  <van-tabs class="tab-container" active="{{ curTabIndex }}" bind:click="onTabClick">
+    <van-tab title="可用"></van-tab>
+    <van-tab title="不可用"></van-tab>
+  </van-tabs>
+  <scroll-view class="scrollarea" scroll-y type="list">
+    <!-- 优惠券列表 -->
+    <view class="coupon-list">
+      <block wx:for="{{ coupons }}" wx:key="id">
+        <view wx:if="{{ curTabIndex === 0 ? item.status === 0 : item.status !== 0 }}" class="coupon-card {{item.status === 1 ? 'used' : ''}} {{item.status === 2 ? 'expired' : ''}}" bind:tap="onCouponClick" data-id="{{item.id}}">
+          <image class="coupon-card-bg" src="/images/coupon/coupon-bg.png" mode="scaleToFill" />
+          <view class="content">
+            <view class="money left">
+              <text class="yuan">¥</text>
+              <text class="amount">{{item.amount}}</text>
+            </view>
+            <view class="right">
+              <view class="title">优惠券</view>
+              <view class="deadline">有效期至：{{item.deadlineLabel}}</view>
+              <view class="description">卡券来源：{{item.description}}</view>
+            </view>
+            <view wx:if="{{item.status !== 0}}" class="seal {{item.status === 1 && 'red'}}">
+              {{item.status === 1 ? '已使用' : ''}}{{item.status === 2 ? '已过期' : ''}}
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <!-- 使用说明 -->
+    <view class="instruction" bind:tap="showPopupPannel">
+      <image class="icon" src="/images/coupon/pink-tips.svg" mode="aspectFill"/>
+      <text>优惠券说明</text>
+    </view>
+  </scroll-view>
+  <!-- 优惠券说明 -->
+  <van-popup show="{{ showPopup }}" position="bottom" bind:close="onPopupClose" round closeable>
+    <view class="bottom-popup-container">
+      <view class="title-row">优惠券说明</view>
+      <view class="content">
+        <rich-text nodes="{{COUPON_DESCRIPTION}}"></rich-text>
+      </view>
+    </view>
+  </van-popup>
+</view>

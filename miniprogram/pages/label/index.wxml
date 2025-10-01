@@ -1,0 +1,60 @@
+<wxs module="utils" src="../utils.wxs" />
+<view class="main">
+  <scroll-view class="selected-label-container" scroll-y type="list">
+    <view class="list">
+      <block wx:for="{{ selectedLabels }}" wx:key="index">
+        <view class="label label-green" bind:tap="onClickSelectedLabel" data-id="{{ item }}">
+          <text>{{ item }}</text>
+          <text>×</text>
+        </view>
+      </block>
+      <view class="label label-custom" bind:tap="showPopupPannel">
+        <text>+</text>
+        <text>自定义标签</text>
+      </view>
+    </view>
+  </scroll-view>
+  <van-tabs class="tab-container" active="{{ curTabIndex }}" bind:click="onTabClick">
+    <block wx:for="{{ LABEL_POOL }}" wx:key="title">
+      <van-tab title="{{item.title }}">
+        <scroll-view class="list-container" scroll-y type="list">
+          <view class="list">
+            <block wx:for="{{ item.content }}" wx:key="index" wx:for-item="label">
+              <view class="label {{ utils.includesStr(selectedLabels, label) ? 'label-green' : '' }}" bind:tap="onClickLabelPool" data-id="{{ label }}">{{ label }}</view>
+            </block>
+          </view>
+        </scroll-view>
+      </van-tab>
+    </block>
+  </van-tabs>
+
+  <!-- 底部工具栏 -->
+  <van-goods-action custom-class="van-bottom">
+    <view class="bottom">
+      <view class="bottom-tools-box"> 
+        <van-button round type="primary" bind:click="onSave">
+          发布
+        </van-button>
+      </view>
+    </view>
+  </van-goods-action>
+
+  <!-- 底部弹窗 -->
+  <van-popup z-index="200" show="{{ showPopup }}" position="bottom" bind:close="onPopupClose" round closeable>
+    <view class="bottom-popup-container">
+      <view class="title-row">自定义标签</view>
+      <view class="content">
+        <view class="topic-row">
+          <van-field custom-class="input" value="{{ customLabel }}" placeholder="输入自定义标签..." bind:change="onTagInputChange" maxlength="20" />
+          <view class="flex-1"></view>
+          <van-button round bind:click="onAddCustomLabel" disabled="{{ customLabel === '' }}">
+            确认
+          </van-button>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- toast -->
+  <van-toast id="van-toast" />
+</view>

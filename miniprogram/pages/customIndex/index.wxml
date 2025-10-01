@@ -1,0 +1,75 @@
+<view class="main">
+  <!-- 二期 -->
+  <!-- <button>搜索</button> -->
+  <!-- swiper -->
+  <swiper class="top-swiper" indicator-dots='true' display-multiple-items='1' autoplay='true' circular='true' interval='2000'>
+    <block wx:for="{{ slideShow }}" wx:key="index">
+      <swiper-item>
+        <view class='swiper-item-box'>
+          <!-- <text class='swiper-item-content'>{{item.content}}</text> -->
+          <image class="swiper-item-image" src="{{item}}" mode="widthFix" />
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+  <!-- 官方活动 -->
+  <view class="official-activity">
+    <view class="title-row">
+      <view class="title">官方活动</view>
+      <button class="more" size="mini" bindtap="navigateToOfficialActivities">查看更多</button>
+    </view>
+    <scroll-view class="scroll-container" scroll-x="true" enhanced="true">
+      <view class="list">
+        <view class="item" wx:for="{{ officialActivities }}" wx:key="id" bindtap="navigateToOfficialActivity" data-id="{{item.id}}">
+          <view class="cover-box">
+            <image class="cover" src="{{ item.cover }}" mode="aspectFill" />
+            <!-- TODO: -->
+            <view class="time">周三02.26</view>
+            <view class="status">报名中</view>
+          </view>
+          <view class="title">{{ item.title }}</view>
+          <view class="point">{{ item.meetingPoint[0] }}</view>
+        </view>
+        <view class="item" wx:for="{{ officialActivities }}" wx:key="id" bindtap="navigateToOfficialActivity" data-id="{{item.id}}">
+          <view class="cover-box">
+            <image class="cover" src="{{ item.cover }}" mode="aspectFill" />
+            <!-- TODO: -->
+            <view class="time">周三02.26</view>
+            <view class="status">报名中</view>
+          </view>
+          <view class="title">{{ item.title }}</view>
+          <view class="point">{{ item.meetingPoint[0] }}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  <!-- list -->
+  <view class="list-container">
+    <block wx:for="{{ customActivities }}" wx:key="id">
+      <view class="activity-container" bindtap="navigateToDetail" data-id="{{item.id}}" data-tour-schedule-id="{{item.tourSchedules[0].id}}">
+        <image class="avatar" src="{{ item.publisher.avatar }}" mode="widthFix"></image>
+        <view class="middle-box">
+          <view class="nickname">@{{ item.publisher.nickname }}</view>
+          <view class="title">{{ item.title }}</view>
+          <view class="time">
+            {{ item.tourSchedules[0].startDate }} | {{ item.meetingPoint[0].name }}
+          </view>
+          <view class="others">
+            <view wx:if="{{ item.tourSchedules[0].members.length > 0 }}">
+              <block wx:for="{{ item.tourSchedules[0].members }}" wx:key="id">
+                <image class="avatar" src="{{ item.avatar }}" mode="widthFix"></image>
+              </block>
+              <text>{{ item.tourSchedules[0].members.length }}人已报名</text>
+            </view>
+            <text wx:else>{{ item.tourSchedules[0].maxPeople }}个名额</text>
+          </view>
+        </view>
+        <image class="cover" src="{{ item.cover }}" mode="aspectFill"></image>
+        <view wx:if="{{ item.valid }}" class="status">报名中</view>
+        <view wx:else class="status over">已结束</view>
+      </view>
+    </block>
+  </view>
+  <!-- 发布 -->
+  <button bindtap="navigateToPublish">发布</button>
+</view>

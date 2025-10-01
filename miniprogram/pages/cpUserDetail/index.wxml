@@ -1,0 +1,140 @@
+<view class="main">
+  <image class="profile-bg" src="/images/public-profile-bg@3x-zip.png" mode="widthFix" />
+  <view class="gradient-bg"></view>
+  <!-- 顶部区域（状态栏 + 导航栏） -->
+  <view class="top-section" style="height: {{navBarHeight}}px; background-color: {{navBg}};">
+    <!-- 状态栏占位 -->
+    <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+    <!-- 导航栏内容 -->
+    <view class="nav-bar">
+      <image src="/images/arrow-left.svg" class="icon" bind:tap="navBack" mode="aspectFill"></image>
+      <text class="nav-bar-inner">{{userInfo.nickName || '互选池详情'}}</text>
+      <view class="icon"></view>
+    </view>
+  </view>
+  <!-- 用户基本信息 -->
+  <view class="profile-user-box">
+    <view class="main-info">
+      <view class="avatar-ring">
+        <view class="avatar-box">
+          <image class="avatar" src="{{userInfo.avatar || DEFAULT_USER_AVATAR}}"></image>
+          <view wx:if="{{userInfo.gender !== 0}}" class="icon-box {{userInfo.gender === 1 ? 'man' : userInfo.gender === 2 ? 'woman' : ''}} ">
+            <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[userInfo.gender]}}" mode="aspectFill" />
+          </view>
+        </view>
+      </view>
+      <view class="base-info-box">
+        <view class="nickname-row">
+          <text class="nickname">{{userInfo.nickName || DEFAULT_USER_NICKNAME}}</text>
+          <view wx:if="{{userInfo.isVerified}}" class="verified-badge">已认证</view>
+        </view>
+        <view class="real-row">
+          <text class="item">{{userInfo.birthday || '**'}}年</text>
+          <text class="item" wx:if="{{userInfo.height}}">{{userInfo.height}}cm</text>
+          <text class="item" wx:if="{{userInfo.education}}">{{userInfo.education}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 详细信息卡片 -->
+  <view class="detail-section">
+    <!-- 基本资料 -->
+    <view class="info-card">
+      <view class="card-title">基本资料</view>
+      <view class="info-item" wx:if="{{userInfo.birthday}}">
+        <view class="info-label">出生年份</view>
+        <view class="info-value">{{userInfo.birthday}}年</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.height}}">
+        <view class="info-label">身高</view>
+        <view class="info-value">{{userInfo.height}}cm</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.weight}}">
+        <view class="info-label">体重</view>
+        <view class="info-value">{{userInfo.weight}}kg</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.currentStatus}}">
+        <view class="info-label">当前状态</view>
+        <view class="info-value">{{userInfo.currentStatus}}</view>
+      </view>
+    </view>
+    <!-- 教育信息 -->
+    <view class="info-card">
+      <view class="card-title">教育信息</view>
+      <view class="info-item" wx:if="{{userInfo.education}}">
+        <view class="info-label">学历</view>
+        <view class="info-value">{{userInfo.education}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.university}}">
+        <view class="info-label">学校</view>
+        <view class="info-value">{{userInfo.university}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.major}}">
+        <view class="info-label">专业</view>
+        <view class="info-value">{{userInfo.major}}</view>
+      </view>
+    </view>
+    <!-- 工作信息 -->
+    <view class="info-card">
+      <view class="card-title">工作信息</view>
+      <view class="info-item" wx:if="{{userInfo.jobTitle}}">
+        <view class="info-label">工作方向</view>
+        <view class="info-value">{{userInfo.jobTitle}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.jobType}}">
+        <view class="info-label">工作类型</view>
+        <view class="info-value">{{userInfo.jobType}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.annualIncome}}">
+        <view class="info-label">年收入</view>
+        <view class="info-value">{{userInfo.annualIncome}}</view>
+      </view>
+    </view>
+    <!-- 个人介绍 -->
+    <view class="info-card" wx:if="{{userInfo.aboutMe}}">
+      <view class="card-title">关于我</view>
+      <view class="info-text">{{userInfo.aboutMe}}</view>
+    </view>
+    <!-- 伴侣要求 -->
+    <view class="info-card" wx:if="{{userInfo.partnerRequirements}}">
+      <view class="card-title">伴侣要求</view>
+      <view class="info-text">{{userInfo.partnerRequirements}}</view>
+    </view>
+    <!-- 家乡和居住信息 -->
+    <view class="info-card">
+      <view class="card-title">居住信息</view>
+      <view class="info-item" wx:if="{{userInfo.hometown}}">
+        <view class="info-label">家乡</view>
+        <view class="info-value">{{userInfo.hometown}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.preferredCity}}">
+        <view class="info-label">常住城市</view>
+        <view class="info-value">{{userInfo.preferredCity}}</view>
+      </view>
+    </view>
+    <!-- 婚恋观和状况 -->
+    <view class="info-card">
+      <view class="card-title">婚恋观和状况</view>
+      <view class="info-item" wx:if="{{userInfo.relationshipView}}">
+        <view class="info-label">婚恋观</view>
+        <view class="info-value">{{userInfo.relationshipView}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.maritalStatus}}">
+        <view class="info-label">婚姻状况</view>
+        <view class="info-value">{{userInfo.maritalStatus}}</view>
+      </view>
+    </view>
+    <!-- 照片 -->
+    <view class="info-card" wx:if="{{userInfo.photos && userInfo.photos.length}}">
+      <view class="card-title">我的照片</view>
+      <view class="photo-list">
+        <image wx:for="{{userInfo.photos}}" wx:key="index" src="{{item}}" class="photo-item" mode="aspectFill" bind:tap="previewImage" data-url="{{item}}"></image>
+      </view>
+    </view>
+    <view class="page-bottom-space"></view>
+  </view>
+  <!-- 底部按钮 -->
+  <view class="contact-button-container" wx:if="{{myUser.role === 3 || myUser.role === 2}}">
+    <button class="contact-button" bind:tap="getContactInfo">获取联系方式</button>
+  </view>
+</view>

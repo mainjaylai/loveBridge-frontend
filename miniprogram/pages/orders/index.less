@@ -1,0 +1,93 @@
+.main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: @bg-gray-color-2;
+}
+
+.scrollarea {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.orders-container {
+  padding: 24rpx;
+}
+
+.order-card {
+  padding-top: 26rpx;
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: @fs-4;
+    margin-bottom: 26rpx;
+
+    .status-color-0 {
+      color: @pink-color;
+    }
+    .status-color-1 {
+      color: @black-color;
+    }
+    .status-color-2 {
+      color: @pink-color;
+    }
+    .status-color-3 {
+      color: @black-color;
+    }
+    .status-color-4 {
+      color: @black-color;
+    }
+  }
+  .activity-row {
+    margin-top: 30rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    .image {
+      width: 176rpx;
+      height: 176rpx;
+      border-radius: 8rpx;
+      margin-right: 24rpx;
+    }
+    .text-container {
+      box-sizing: border-box;
+      flex: 1;
+      height: 176rpx;
+      padding-top: 8rpx;
+      padding-bottom: 18rpx;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: @fs-4;
+      .title {
+        font-size: 36rpx;
+        font-weight: 600;
+        overflow: hidden;
+        width: 300rpx;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .money {
+        .yuan {
+          font-size: 24rpx;
+        }
+        .amount {
+          font-size: @fs-2;
+        }
+      }
+      .date {
+        color: @fc-gray2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 8rpx;
+      }
+    }
+  }
+}
+
+.null {
+  margin-top: 100px;
+  text-align: center;
+}

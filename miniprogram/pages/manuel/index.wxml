@@ -1,0 +1,4 @@
+<view class="page-main">
+  <rich-text class="content" nodes="{{ content }}"></rich-text>
+  <view class="space"></view>
+</view>

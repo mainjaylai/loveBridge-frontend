@@ -1,0 +1,235 @@
+.main {
+  background-color: @bg-gray-color-2;
+  min-height: 100vh;
+}
+
+.avatar-container {
+  width: 80rpx;
+  height: 80rpx;
+  .van-button {
+    width: 80rpx !important;
+    height: 80rpx !important;
+    border-radius: 50%;
+    background-color: #fff;
+    border: none;
+  }
+  .avatar {
+    display: block;
+    width: 80rpx;
+    height: 80rpx;
+  }
+}
+
+.button-box {
+  margin: 32rpx;
+  font-weight: 600;
+  font-size: 28rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32rpx;
+  .button {
+    padding: 24rpx;
+    flex: 1;
+  }
+}
+
+.page-bottom-space {
+  padding-bottom: 26px;
+}
+
+// 调整vant组件样式
+.van-cell-avatar {
+  padding: 16rpx 32rpx !important;
+}
+.van-cell-placeholder {
+  color: @fc-gray3 !important;
+}
+.van-cell-value {
+  color: @black-color !important;
+}
+.van-cell__title {
+  font-size: @fs-2;
+  color: #000;
+}
+.van-cell__value {
+  font-size: @fs-2;
+}
+
+.coupon-van-popup {
+  background-color: transparent !important;
+  width: 100% !important;
+  padding-left: 56rpx;
+  top: 40% !important;
+  .container {
+    position: relative;
+    .coupon-img {
+      width: 694rpx;
+      height: 648rpx;
+      display: block;
+    }
+    .content {
+      box-sizing: border-box;
+      width: 574rpx;
+      height: 200rpx;
+      position: absolute;
+      bottom: 164rpx;
+      left: 32rpx;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .left {
+        box-sizing: border-box;
+        width: 204rpx;
+        flex-shrink: 0;
+        padding-left: 30rpx;
+        .yuan {
+          font-size: 48rpx;
+        }
+        .amount {
+          font-size: 80rpx;
+        }
+      }
+      .right {
+        padding-left: 50rpx;
+        .title {
+          font-weight: 600;
+          margin-bottom: 6rpx;
+        }
+        .description {
+          color: @fc-gray2;
+          font-size: @fs-4;
+        }
+      }
+    }
+    .gradient-button {
+      position: absolute;
+      bottom: 56rpx;
+      left: 52rpx;
+      width: 534rpx;
+      height: 80rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28rpx;
+      font-weight: 600;
+      line-height: 32rpx;
+    }
+  }
+}
+
+// 大学搜索弹出层样式
+.university-search-popup {
+  position: relative;
+  box-sizing: border-box;
+  height: 1200rpx; // 固定高度，与van-popup保持一致
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// 弹出层顶部样式
+.popup-header {
+  position: relative;
+  height: 80rpx;
+  padding: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  // 弹出层标题
+  .popup-title {
+    font-size: 32rpx;
+    font-weight: 500;
+    color: #323233;
+  }
+
+  // 关闭按钮样式
+  .close-btn {
+    position: absolute;
+    top: 20rpx;
+    right: 20rpx;
+    padding: 10rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// 搜索容器
+.search-container {
+  padding: 0 16rpx 16rpx;
+  flex-shrink: 0;
+}
+
+// 滚动容器
+.scroll-container {
+  flex: 1;
+  height: calc(100% - 180rpx); // 减去头部和搜索框的高度
+  overflow: hidden;
+}
+
+.university-scroll {
+  height: 100%;
+  position: relative;
+}
+
+// 为van-search定义样式
+.university-search {
+  width: 100% !important;
+}
+
+// 搜索输入框
+.search-input {
+  height: 28px;
+  min-height: 28px;
+}
+
+// 全局修改vant搜索组件样式
+.van-search {
+  padding: 8rpx 0 !important;
+}
+
+.van-search__content {
+  background-color: #f7f8fa !important;
+}
+
+// 列表项
+.university-search-popup .van-cell {
+  padding: 24rpx 32rpx;
+}
+
+.university-search-popup .van-cell:active {
+  background-color: #f2f3f5;
+}
+
+// 空结果提示
+.empty-result {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60rpx 0;
+  color: #969799;
+  font-size: 28rpx;
+}
+
+.bottom-popup-container {
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16rpx;
+    padding: 32rpx;
+    padding-bottom: 300rpx;
+    .label {
+      padding: 16rpx 32rpx;
+      border-radius: 200rpx;
+      background-color: @bg-gray-color-2;
+      border: 1px solid @bg-gray-color-2;
+    }
+    .label-green {
+      background-color: @green-color;
+      border: 1px solid @green-color;
+    }
+  }
+}

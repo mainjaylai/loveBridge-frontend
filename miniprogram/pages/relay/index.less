@@ -1,0 +1,149 @@
+.van-uploader__preview {
+  margin: 0 !important;
+}
+.van-uploader__preview-image {
+  width: 108rpx !important;
+  height: 108rpx !important;
+}
+
+.activity-card {
+  .title-row {
+    font-size: @fs-1;
+    margin-bottom: 22rpx;
+  }
+  .date-row {
+    justify-content: flex-start;
+    .duration-box {
+      font-size: @fs-4;
+      font-weight: 600;
+      .duration {
+        font-size: 40rpx;
+        font-weight: 900;
+      }
+    }
+  }
+  .divider {
+    background: @fc-gray3;
+    border-radius: 6rpx;
+    width: 6rpx;
+    height: 132rpx;
+    margin: 0 24rpx;
+  }
+  .date-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12rpx;
+    font-size: @fs-4;
+    .label {
+      color: @fc-gray1;
+    }
+    .date {
+      font-weight: 600;
+    }
+  }
+}
+
+.people-card {
+  .people-card-content {
+    margin-top: 16rpx;
+  }
+}
+
+.discount-card {
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .look-discount {
+      font-size: small;
+      color: #5c8dff;
+      .iconfont {
+        font-size: small;
+      }
+    }
+  }
+  .content {
+    margin-top: 4rpx;
+    .van-cell {
+      padding: 12rpx 0 !important;
+      .van-cell__value {
+        font-size: @fs-4 !important;
+        color: @pink-color;
+      }
+    }
+    .coupon-title {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      .clear {
+        color: @pink-color;
+      }
+    }
+  }
+}
+
+.remark-card {
+  .van-cell {
+    padding: 16rpx 0 !important;
+  }
+}
+
+.select-protocol {
+  margin: 28rpx 0;
+  position: relative;
+}
+.select-protocol-text {
+  font-size: @fs-4;
+  .link {
+    color: @blue-color;
+  }
+}
+.tooltip {
+  position: absolute;
+  top: -80rpx;
+  left: -12rpx;
+  width: 312rpx;
+  height: 77.5rpx;
+  .tooltip-bg {
+    position: absolute;
+    width: 312rpx;
+    height: 77.5rpx;
+  }
+  .tooltip-text {
+    position: inherit;
+    font-size: @fs-4;
+    padding-top: 16rpx;
+    padding-left: 24rpx;
+  }
+}
+
+.popup-content {
+  width: 590rpx;
+  height: 760rpx;
+  border-radius: 32rpx;
+  .popup-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 590rpx;
+    height: 760rpx;
+    border-radius: 32rpx;
+  }
+  .group-img {
+    position: absolute;
+    top: 316rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 312rpx;
+    height: 312rpx;
+  }
+  .group-text {
+    position: absolute;
+    top: 658rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    color: @fc-gray2;
+    font-size: 22rpx;
+  }
+}

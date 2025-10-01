@@ -1,0 +1,114 @@
+<wxs module="utils" src="../utils.wxs" />
+<view class="page-main">
+  <!-- 活动信息卡片 -->
+  <view class="base-card-new activity-card">
+    <view class="flex base-card-title title-row">
+      <text class="text-ellipsis">{{options.title}}</text>
+    </view>
+    <view class="flex date-row">
+      <view class="duration-box">
+        <text class="duration">{{options.duration}}</text>
+        <text>天</text>
+      </view>
+      <view class="divider"></view>
+      <view class="date-box">
+        <view class="row">
+          <text class="label">开始时间：</text>
+          <text class="date">{{options.startDate}}</text>
+        </view>
+        <view class="row">
+          <text class="label">结束时间：</text>
+          <text class="date">{{options.endDate}}</text>
+        </view>
+        <view class="row">
+          <text class="label">集合信息：</text>
+          <text class="date">{{options.meetingPoint}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 出行人信息 -->
+  <view class="base-card-new people-card">
+    <view class="base-card-title">出行人信息</view>
+    <view class="people-card-content">
+      <view class="avatar-box">
+        <image class="avatar" src="{{user.avatar}}"></image>
+        <!-- 1男 2女 0 不展示 -->
+        <view wx:if="{{user.gender !== 0}}" class="icon-box {{user.gender === 1 ? 'man' : user.gender === 2 ? 'woman' : ''}} ">
+          <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[user.gender]}}" mode="aspectFill" />
+        </view>
+      </view>
+      <view class="base-info-box">
+        <view class="nickname-row">
+          <text class="nickname">{{user.nickname}}</text>
+          <text class="university">{{user.university}}</text>
+        </view>
+        <view class="real-row">
+          <text class="item">{{user.realName}}</text>
+          <text class="item">{{user.idCard}}</text>
+          <text>(保密)</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 活动优惠卡片 -->
+  <view class="base-card-new discount-card">
+    <view class="title-row">
+      <view class="base-card-title">优惠信息</view>
+      <!-- <view class="look-discount">
+        <text class="iconfont icon-question-circle"></text>
+        <text>查看优惠政策</text>
+      </view> -->
+    </view>
+    <view class="content">
+      <van-cell border="{{false}}" value="{{coupon.amount ? '-¥' : ''}}{{coupon.amount}}" is-link bind:click="navigateToCoupons">
+        <view class="coupon-title" slot="title">
+          <view>优惠券</view>
+          <view class="clear" catch:tap="clearCoupon">{{coupon.amount ? '|点击取消使用' : ''}}</view>
+        </view>
+      </van-cell>
+      <van-cell border="{{false}}" title="团报优惠(活动后返现)" center>
+        <view slot="">
+          <van-field class="form-input" value="{{ captain }}" placeholder="统一写团队中某一人名字" bind:change="onInputChange" data-id="captain" border="{{ false }}" input-align="right" maxlength="{{10}}" />
+        </view>
+      </van-cell>
+      <van-cell border="{{false}}" title="集赞优惠(活动后返现)" center>
+        <view slot="">
+          <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:delete="afterDelete" max-count="1" accept="image" />
+        </view>
+      </van-cell>
+    </view>
+  </view>
+  <!-- 备注卡片 -->
+  <view class="base-card-new remark-card">
+    <view class="base-card-title">备注</view>
+    <van-field input-class="form-input" value="{{ remark }}" placeholder="如有特殊病史或有不宜参加的旅程（项目）、分开报名需安排同住同车等，请备注" bind:change="onInputChange" data-id="remark" border="{{ false }}" type="textarea" autosize="{{ {minHeight: 40 } }}" />
+  </view>
+  <view class="select-protocol">
+    <view wx:if="{{ showTooltip }}" class="tooltip">
+      <image class="tooltip-bg" src="/images/bg-tooltip.svg" />
+      <text class="tooltip-text">请阅读并同意以下内容</text>
+    </view>
+    <van-radio-group value="{{ selectProtocol }}" bind:change="onRadioChange">
+      <van-radio name="1" label-class="select-protocol-text" checked-color="#222">
+        <text>支付表示已阅读并接受</text>
+        <text class="link" catch:tap="navToManuel" data-id="cancelPolicy">《{{PROTOCOL_KEY_TO_LABEL['cancelPolicy']}}》</text>
+        <!-- <text class="link" catch:tap="navToManuel" data-id="contractTemplate">《{{PROTOCOL_KEY_TO_LABEL['contractTemplate']}}》</text> -->
+        <text class="link" catch:tap="navToManuel" data-id="bookingTips">《{{PROTOCOL_KEY_TO_LABEL['bookingTips']}}》</text>
+        <text class="link" catch:tap="navToManuel" data-id="safetyTips">《{{PROTOCOL_KEY_TO_LABEL['safetyTips']}}》</text>
+      </van-radio>
+    </van-radio-group>
+  </view>
+  <!-- 底部分割线 -->
+  <view class="page-bottom-space"></view>
+  <!-- 下单栏 -->
+  <van-submit-bar price="{{ utils.subtraction(options.price, coupon.amount) }}" label="总额：" button-text="支付" decimal-length="2" bind:submit="confirmOrder" />
+  <!-- toast -->
+  <van-toast id="van-toast" />
+  <!-- center popup -->
+  <van-popup custom-class="popup-content" show="{{ showPopup }}" bind:close="onPopupClose" closeable>
+    <image class="popup-background" src="/images/activity-relay/popup-background.png" mode="aspectFill" />
+    <image class="group-img" show-menu-by-longpress="{{true}}" src="{{ options.groupImg }}" mode="scaleToFill" />
+    <text class="group-text">关闭后也可在订单里扫码进群</text>
+  </van-popup>
+</view>

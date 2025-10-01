@@ -1,0 +1,126 @@
+<view class="main">
+  <van-cell-group title="基础资料">
+    <van-cell custom-class="van-cell-avatar" title="*头像" center>
+      <view slot="">
+        <van-button class="avatar-container" type="info" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{ userInfo.avatar === '' ? DEFAULT_USER_AVATAR : userInfo.avatar}}"></image>
+        </van-button>
+      </view>
+    </van-cell>
+    <van-cell title="*昵称" center>
+      <view slot="">
+        <van-field class="form-input" type="nickname" value="{{ userInfo.nickname }}" placeholder="请输入用户名" bind:change="onInputChange" data-id="nickname" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+      </view>
+    </van-cell>
+    <van-cell value-class="van-cell-value" title="*性别" value="{{userGender}}" is-link bind:click="showPopupPannel" data-id="gender"></van-cell>
+    <van-cell value-class="van-cell-value" title="*生日" value="{{userBirthdayLabel}}" is-link bind:click="showPopupPannel" data-id="birthday"></van-cell>
+    <van-cell value-class="van-cell-value" title="星座" value="{{userInfo.starSign}}" is-link bind:click="showPopupPannel" data-id="starSign"></van-cell>
+    <van-cell value-class="van-cell-value" title="MBTI" value="{{userInfo.mbti}}" is-link bind:click="showPopupPannel" data-id="mbti"></van-cell>
+    <van-cell title="标签" value="去编辑" is-link bind:click="editLabel"></van-cell>
+    <van-cell title="个性签名" center>
+      <view slot="">
+        <van-field class="form-input" value="{{ userInfo.signature }}" placeholder="请输入个性签名" bind:change="onInputChange" data-id="signature" border="{{ false }}" input-align="right" maxlength="{{100}}" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <van-cell-group title="实名信息（报名活动必填，仅用作购买保险）">
+    <van-cell title="真实姓名" center>
+      <view slot="">
+        <van-field class="form-input" value="{{ userInfo.realName }}" placeholder="请输入真实姓名" bind:change="onInputChange" data-id="realName" border="{{ false }}" input-align="right" maxlength="{{10}}" />
+      </view>
+    </van-cell>
+    <van-cell title="手机号码" center>
+      <view slot="">
+        <van-field class="form-input" type="number" value="{{ userInfo.phone }}" placeholder="请输入真实号码" bind:change="onInputChange" data-id="phone" border="{{ false }}" input-align="right" maxlength="{{15}}" />
+      </view>
+    </van-cell>
+    <van-cell value-class="van-cell-value" title="证件类型" value="{{userCredentialType}}" is-link bind:click="showPopupPannel" data-id="credentialType"></van-cell>
+    <van-cell title="证件号码" center>
+      <view slot="">
+        <van-field class="form-input" type="{{selectedCredentialType === 'idcard' ? 'idcard' : 'text'}}" value="{{ userInfo.idCard }}" placeholder="{{selectedCredentialType === 'idcard' ? '请输入身份证号码' : '请输入护照号码'}}" bind:change="onInputChange" data-id="idCard" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <van-cell-group title="学历信息">
+    <van-cell value-class="van-cell-value" title="*学历" value="{{userInfo.education}}" is-link bind:click="showPopupPannel" data-id="education"></van-cell>
+    <van-cell value-class="van-cell-value" title="*学校" value="{{userInfo.university}}" is-link bind:click="showPopupPannel" data-id="university"></van-cell>
+    <!-- <van-cell title="校区" center>
+      <view slot="">
+        <van-field class="form-input" value="{{ userInfo.campus }}" placeholder="请输入校区" bind:change="onInputChange" data-id="campus" border="{{ false }}" input-align="right" maxlength="{{10}}" />
+      </view>
+    </van-cell> -->
+    <van-cell title="专业/职业" center>
+      <view slot="">
+        <van-field class="form-input" value="{{ userInfo.profession }}" placeholder="请输入专业/职业" bind:change="onInputChange" data-id="profession" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <view class="button-box">
+    <view class="button primary-button" bind:tap="onSave">保存</view>
+    <view class="button secondary-button" bind:tap="onPreview">预览</view>
+  </view>
+  <view class="page-bottom-space"></view>
+  <!-- bottom popup -->
+  <van-popup show="{{ showPopup }}" position="bottom" bind:close="onPopupClose" round custom-style="{{ curProperty === 'university' ? 'height: 1200rpx;' : '' }}">
+    <block wx:if="{{ curProperty !== 'university' }}">
+      <block wx:if="{{ curProperty !== 'birthday' }}">
+        <van-picker show-toolbar bind:cancel="onPopupClose" bind:confirm="onPickerConfirm" columns="{{currentPickerOptions}}" />
+      </block>
+      <block wx:else>
+        <van-datetime-picker
+          type="date"
+          value="{{ userBirthday }}"
+          min-date="{{ birthdayPickerMinDate }}"
+          max-date="{{ birthdayPickerMaxDate }}"
+          bind:cancel="onPopupClose"
+          bind:confirm="onBirthdayConfirm"
+        />
+      </block>
+    </block>
+    <block wx:else>
+      <view class="university-search-popup">
+        <view class="popup-header">
+          <text class="popup-title">选择学校</text>
+          <view class="close-btn" bind:tap="onPopupClose">
+            <van-icon name="cross" size="20px" />
+          </view>
+        </view>
+        <view class="search-container">
+          <van-search custom-class="university-search" value="{{ searchKeyword }}" placeholder="请输入学校名称" bind:change="onSearchChange" bind:search="onSearchConfirm" bind:blur="onSearchBlur" bind:keyboardheightchange="onKeyboardHeightChange" adjust-position="{{false}}" focus="{{false}}" confirm-type="search" show-action="{{false}}" shape="round" input-class="search-input" />
+        </view>
+        <view class="scroll-container">
+          <scroll-view scroll-y class="university-scroll">
+            <van-cell-group>
+              <block wx:if="{{ filteredUniversities.length > 0 }}">
+                <van-cell wx:for="{{ filteredUniversities }}" wx:key="value" title="{{ item.label }}" bind:click="onUniversitySelect" data-value="{{ item.value }}" data-label="{{ item.label }}" />
+              </block>
+              <block wx:else>
+                <view class="empty-result">
+                  <text>没有找到匹配的学校</text>
+                </view>
+              </block>
+            </van-cell-group>
+          </scroll-view>
+        </view>
+      </view>
+    </block>
+  </van-popup>
+  <!-- center popup -->
+  <van-popup custom-class="coupon-van-popup" show="{{ showPopupCenter }}" bind:close="onPopupCenterClose" closeable>
+    <view class="container">
+      <image class="coupon-img" src="https://gitee.com/mainjay/outdoor-image/raw/master/images/bg-get-coupon.svg" mode="widthFix" />
+      <view class="content">
+        <view class="money left">
+          <text class="yuan">¥</text>
+          <text class="amount">10</text>
+        </view>
+        <view class="right">
+          <view class="title">完整注册用户专享</view>
+          <view class="description">购买抵扣，有效期180天</view>
+        </view>
+      </view>
+      <view class="gradient-button" bind:tap="navigateToIndex">去使用</view>
+    </view>
+  </van-popup>
+  <van-toast id="van-toast" />
+</view>

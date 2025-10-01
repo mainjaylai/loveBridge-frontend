@@ -1,0 +1,8 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 37">
+<path id="Rectangle 98" d="M8 12C8 9.79086 9.79086 8 12 8H23C25.2091 8 27 9.79086 27 12V40H9C8.44771 40 8 39.5523 8 39V12Z" stroke="#222222" stroke-width="3" stroke-linecap="round"/>
+<path id="Rectangle 99" d="M27 20H32C36.4183 20 40 23.5817 40 28V39C40 39.5523 39.5523 40 39 40H27V20Z" fill="#79F138" stroke="#222222" stroke-width="3" stroke-linecap="round"/>
+<rect id="Rectangle 100" x="13" y="19" width="9" height="3" rx="1.5" fill="#222222"/>
+<rect id="Rectangle 101" x="13" y="28" width="9" height="3" rx="1.5" fill="#222222"/>
+</g>
+</svg>

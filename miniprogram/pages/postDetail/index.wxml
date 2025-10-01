@@ -1,0 +1,214 @@
+<view class="main">
+  <!-- 添加公众号关注提示栏 -->
+  <view class="notification-bar" wx:if="{{!user.mpOpenId}}" bind:tap="showSubscribePopup">
+    <view class="notification-icon">
+      <image class="bell-icon" src="/images/social/bell.svg" mode="aspectFill" />
+    </view>
+    <text class="notification-text">当前无法获取新消息提醒，点击设置</text>
+  </view>
+  <!-- 公众号关注弹窗 -->
+  <van-popup show="{{ showSubscribePopup }}" bind:close="hideSubscribePopup" round custom-class="subscribe-popup" close-icon-position="top-right">
+    <view class="subscribe-content">
+      <view class="subscribe-title">实时获取评论推送</view>
+      <view class="subscribe-desc">长按下方二维码关注服务号</view>
+      <image class="qrcode-image" show-menu-by-longpress="true" src="/images/social/qrcode.jpg" mode="aspectFill" />
+    </view>
+  </van-popup>
+  <view class="shadow"></view>
+  <view class="replying-overlay" wx:if="{{ isReplying }}" bind:tap="cancelReply"></view>
+  <view class="post-item">
+    <view class="social-user-box" bind:tap="onUserClick" data-id="{{post.user.id}}">
+      <view class="avatar-box">
+        <image class="avatar" src="{{post.user.avatar}}"></image>
+        <view wx:if="{{post.user.gender !== 0}}" class="icon-box {{post.user.gender === 1 ? 'man' : post.user.gender === 2 ? 'woman' : ''}} ">
+          <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[post.user.gender]}}" mode="aspectFill" />
+        </view>
+      </view>
+      <view class="base-info-box">
+        <view class="nickname-row">
+          <text class="nickname">{{post.user.nickname}}</text>
+        </view>
+        <view class="real-row">
+          <text class="item">{{post.user.birthYear || '**年'}}</text>
+          <text class="item">{{post.user.university || '****大学'}}</text>
+          <text class="item">{{post.user.profession || ''}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="social-content-box">
+      <view class="content">
+        <text>{{ post.content }}</text>
+        <block wx:for="{{ post.tags }}" wx:key="index" wx:for-item="tag">
+          <text space="nbsp" class="tag"> #{{ tag }}</text>
+        </block>
+      </view>
+      <view wx:if="{{ post.images.length > 0 }}" class="images">
+        <block wx:for="{{ post.images }}" wx:key="index" wx:for-item="img">
+          <view class="image-container {{ post.images.length === 1 ? 'single' : post.images.length === 2 || post.images.length === 4 ? 'double' : 'triple' }}">
+            <image class="image" src="{{ img }}" mode="aspectFill" bind:tap="previewPostImages" data-index="{{index}}" bindlongpress="handleLongPressPostImage" data-url="{{img}}" data-index="{{index}}"></image>
+          </view>
+        </block>
+      </view>
+      <view class="time-address-box">
+        <text class="time">{{ post.createdAt }}</text>
+      </view>
+    </view>
+  </view>
+  <view class="divider"></view>
+  <!-- 评论区 -->
+  <view class="comment-container">
+    <view class="title">全部评论</view>
+    <view class="comments">
+      <block wx:for="{{ post.comments }}" wx:key="id">
+        <view class="comment-box">
+          <view class="social-user-box" bind:tap="onUserClick" data-id="{{item.user.id}}">
+            <view class="avatar-box">
+              <image class="avatar" src="{{item.user.avatar}}"></image>
+              <view wx:if="{{item.user.gender !== 0}}" class="icon-box {{item.user.gender === 1 ? 'man' : item.user.gender === 2 ? 'woman' : ''}} ">
+                <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[item.user.gender]}}" mode="aspectFill" />
+              </view>
+            </view>
+            <view class="base-info-box">
+              <view class="nickname-row">
+                <text class="nickname">{{item.user.nickname}}</text>
+              </view>
+              <view class="real-row">
+                <text class="item">{{item.user.birthYear || '**年'}}</text>
+                <text class="item">{{item.user.university || '****大学'}}</text>
+                <text class="item">{{item.user.profession || ''}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="content-box">
+            <view class="content {{ expandedComments[item.id] ? 'expanded' : '' }}" bind:tap="onReply" data-id="{{ item.id }}" data-nickname="{{ item.user.nickname }}" data-userid="{{ item.user.id }}">
+              <text>{{ item.content }}</text>
+            </view>
+            <!-- 展开/收起评论按钮 -->
+            <view class="expand-comment" wx:if="{{ item.content.length > 100 }}" catch:tap="toggleCommentExpand" data-id="{{ item.id }}">
+              <text>{{ expandedComments[item.id] ? '收起' : '展开' }}</text>
+            </view>
+            <!-- 评论图片 -->
+            <view class="comment-image-container" wx:if="{{ item.image }}">
+              <image class="comment-image" src="{{ item.image }}" mode="widthFix" bind:tap="previewImage" data-url="{{ item.image }}" bindlongpress="handleLongPressImage" data-url="{{ item.image }}" data-comment-id="{{ item.id }}"></image>
+            </view>
+            <view class="comment-bottom-box">
+              <text class="time">{{ item.createdAt }}</text>
+              <view class="operation reply" bind:tap="onReply" data-id="{{ item.id }}" data-nickname="{{ item.user.nickname }}" data-userid="{{ item.user.id }}">
+                回复
+              </view>
+              <view class="flex-1"></view>
+              <view class="operation like" catch:tap="likeComment" data-id="{{ item.id }}">
+                <image wx:if="{{ item.isLiked }}" class="icon" src="/images/social/liked.svg" mode="aspectFill" />
+                <image wx:else class="icon" src="/images/social/like.svg" mode="aspectFill" />
+                <view class="text">{{ item.likesCount === 0 ? '' : item.likesCount }}</view>
+              </view>
+            </view>
+            <!-- 子评论区域 -->
+            <view class="sub-comments-container" wx:if="{{ item.subComments && item.subComments.length > 0 }}">
+              <view class="sub-comments">
+                <!-- 显示所有子评论 -->
+                <block wx:for="{{ item.subComments }}" wx:for-item="subItem" wx:for-index="subIndex" wx:key="id">
+                  <view class="sub-comment-box">
+                    <view class="avatar-box" bind:tap="onUserClick" data-id="{{subItem.user.id}}">
+                      <image class="avatar" src="{{subItem.user.avatar}}"></image>
+                      <view wx:if="{{subItem.user.gender !== 0}}" class="icon-box {{subItem.user.gender === 1 ? 'man' : subItem.user.gender === 2 ? 'woman' : ''}} ">
+                        <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[subItem.user.gender]}}" mode="aspectFill" />
+                      </view>
+                    </view>
+                    <view class="sub-right">
+                      <view class="sub-nickname" bind:tap="onUserClick" data-id="{{subItem.user.id}}">
+                        {{subItem.user.nickname}}
+                      </view>
+                      <view class="sub-content">
+                        <!-- 子评论中的回复信息 - 移到内容前面 -->
+                        <block wx:if="{{ subItem.replyCommentId !== subItem.parentCommentId }}">
+                          <view class="sub-reply-key">回复</view>
+                          <view class="sub-reply-nickname" bind:tap="onUserClick" data-id="{{ subItem.replyUser.id }}">
+                            {{ subItem.replyUser.nickname }}：
+                          </view>
+                        </block>
+                        <view class="sub-reply-content">{{ subItem.content }}</view>
+                        <!-- 子评论图片 -->
+                        <view class="sub-comment-image-container" wx:if="{{ subItem.image }}">
+                          <image class="sub-comment-image" src="{{ subItem.image }}" mode="widthFix" bind:tap="previewImage" data-url="{{ subItem.image }}" bindlongpress="handleLongPressImage" data-url="{{ subItem.image }}" data-comment-id="{{ subItem.id }}"></image>
+                        </view>
+                      </view>
+                      <view class="comment-bottom-box">
+                        <text class="time">{{ subItem.createdAt }}</text>
+                        <view class="operation reply" bind:tap="onReply" data-id="{{ subItem.id }}" data-nickname="{{ subItem.user.nickname }}" data-userid="{{ subItem.user.id }}">
+                          回复
+                        </view>
+                        <view class="flex-1"></view>
+                        <view class="operation like" catch:tap="likeComment" data-id="{{ subItem.id }}">
+                          <image wx:if="{{ subItem.isLiked }}" class="icon" src="/images/social/liked.svg" mode="aspectFill" />
+                          <image wx:else class="icon" src="/images/social/like.svg" mode="aspectFill" />
+                          <view class="text">
+                            {{ subItem.likesCount === 0 ? '' : subItem.likesCount }}
+                          </view>
+                        </view>
+                      </view>
+                    </view>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <view style="padding-top: 52rpx;" wx:if="{{!post.comments || post.comments.length === 0}}">
+        <empty-page></empty-page>
+      </view>
+      <view wx:else class="page-bottom-space"></view>
+    </view>
+  </view>
+  <!-- 底部操作栏 -->
+  <van-goods-action custom-class="van-goods-action-custom-class {{isKeyboardShown ? 'keyboard-shown' : ''}}">
+    <view class="bottom-tools-box">
+      <view class="shadow-bottom"></view>
+      <view class="tool-main">
+        <block wx:if="{{ !isReplying }}">
+          <view class="fake-input" bind:tap="onReplyPost">
+            <text class="fake-input-text">说点什么...</text>
+          </view>
+          <!-- 操作按钮区域 - 移动至此 -->
+          <view class="operation-box">
+            <button class="operation share-button" plain="true" open-type="share">
+              <image class="icon" src="/images/social/share.svg" mode="aspectFill" />
+              <text class="text">分享</text>
+            </button>
+            <view class="operation" bind:tap="likePost" data-id="{{ post.id }}">
+              <image wx:if="{{ post.isLiked }}" class="icon" src="/images/social/liked.svg" mode="aspectFill" />
+              <image wx:else class="icon" src="/images/social/like.svg" mode="aspectFill" />
+              <text class="text">{{ post.likesCount === 0 ? '点赞' : post.likesCount }}</text>
+            </view>
+            <view class="operation" bind:tap="onReplyPost">
+              <image class="icon" src="/images/social/coment.svg" mode="aspectFill" />
+              <text class="text">{{ post.commentsCount === 0 ? '评论' : post.commentsCount }}</text>
+            </view>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="reply-input-container">
+            <view class="preview-image-container" wx:if="{{ commentImage }}">
+              <image class="preview-image" src="{{ commentImage }}" mode="aspectFill"></image>
+              <view class="remove-image" bind:tap="removeImage">
+                <text class="close">×</text>
+              </view>
+            </view>
+            <view class="input-actions-row">
+              <van-field class="van-comment-input-class" custom-class="van-comment-input-custom-class" input-class="van-comment-input-input-class" value="{{ comment }}" placeholder="{{ replyTo.nickname ? '回复：' + replyTo.nickname : '说点什么' }}" auto-focus bind:confirm="publish" bind:change="onInputChange" maxlength="1000" type="textarea" show-confirm-bar="{{false}}" autosize="{{ {minHeight: '48rpx',maxHeight: '192rpx' } }}" />
+              <view class="reply-actions">
+                <view class="upload-image-btn" bind:tap="chooseImage">
+                  <image class="icon" src="/images/social/camera.svg" mode="aspectFill" />
+                </view>
+                <view class="send-btn {{ comment || commentImage ? 'active' : 'disabled' }}" bind:tap="publish">
+                  <text>发送</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </van-goods-action>
+</view>

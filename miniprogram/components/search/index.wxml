@@ -1,0 +1,20 @@
+<view class="custom-search" style="background: {{background}}">
+    <view class="search-content {{shape === 'round' ? 'round' : ''}}">
+        <view class="search-icon">
+            <view class="svg-icon">
+                <!-- 搜索图标 SVG -->
+                <text class="iconfont icon-search"></text>
+            </view>
+        </view>
+        <input class="search-input" value="{{inputValue}}" placeholder="{{placeholder}}" confirm-type="search" focus="{{focused}}" bindinput="onInput" bindconfirm="onSearch" bindfocus="onFocus" bindblur="onBlur" />
+        <view class="clear-icon" bindtap="onClear" wx:if="{{inputValue.length > 0}}">
+            <view class="svg-icon">
+                <!-- 清除图标 SVG -->
+                <text class="iconfont icon-clear"></text>
+            </view>
+        </view>
+    </view>
+    <view class="search-action" wx:if="{{showAction}}">
+        <view class="action-text" bindtap="onSearch">{{actionText}}</view>
+    </view>
+</view>

@@ -1,0 +1,22 @@
+<view class="container">
+  <view class="loading-container" wx:if="{{loading}}">
+    <van-loading type="spinner" color="#00d0aa" />
+  </view>
+  <view class="records-list" wx:else>
+    <view class="empty-tip" wx:if="{{records.length === 0}}">
+      暂无明细记录
+    </view>
+    <view class="record-item" wx:for="{{records}}" wx:key="id">
+      <view class="record-top">
+        <view class="record-description">{{item.description}}</view>
+        <view class="record-date">{{item.formattedDate}}</view>
+      </view>
+      <view class="record-bottom">
+        <view class="record-amount {{item.type <= 10 ? 'income' : 'expense'}}">
+          {{item.type <= 10 ? '+' : '-'}}¥{{item.formattedAmount}}
+        </view>
+        <view class="record-balance">余额: ¥{{item.formattedBalance}}</view>
+      </view>
+    </view>
+  </view>
+</view> 

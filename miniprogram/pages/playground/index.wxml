@@ -1,0 +1,91 @@
+<view class="main">
+  <!-- 热门帖子入口 -->
+  <view class="hot-posts-entry" bind:tap="navigateToHotPosts">
+    <view class="hot-posts-icon">🔥</view>
+    <view class="hot-posts-text">48小时热帖榜</view>
+    <view class="hot-posts-arrow">
+      <text class="iconfont icon-arrow-right"></text>
+    </view>
+  </view>
+  <!-- 搜索帖子入口 -->
+  <view class="search-posts-entry" bind:tap="navigateToSearchPosts">
+    <view class="search-posts-icon">🔍</view>
+    <view class="search-posts-text">搜索帖子</view>
+    <view class="search-posts-arrow">
+      <text class="iconfont icon-arrow-right"></text>
+    </view>
+  </view>
+  <block wx:for="{{ posts }}" wx:key="id">
+    <view class="post-item">
+      <view class="social-user-box" bind:tap="onUserClick" data-id="{{item.user.id}}">
+        <view class="avatar-box">
+          <image class="avatar" src="{{item.user.avatar}}"></image>
+          <view wx:if="{{item.user.gender !== 0}}" class="icon-box {{item.user.gender === 1 ? 'man' : item.user.gender === 2 ? 'woman' : ''}} ">
+            <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[item.user.gender]}}" mode="aspectFill" />
+          </view>
+        </view>
+        <view class="base-info-box">
+          <view class="nickname-row">
+            <text class="nickname">{{item.user.nickname}}</text>
+          </view>
+          <view class="real-row">
+            <text class="item">{{item.user.birthYear || '**年'}}</text>
+            <text class="item">{{item.user.university || '****大学'}}</text>
+            <text class="item">{{item.user.profession || ''}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="social-content-box" bind:tap="navToDetail" data-id="{{ item.id }}">
+        <view class="content content-ellipses">
+          <text>{{ item.content }}</text>
+          <block wx:for="{{ item.tags }}" wx:key="index" wx:for-item="tag">
+            <text space="nbsp" class="tag"> #{{ tag }}</text>
+          </block>
+        </view>
+        <view wx:if="{{ item.images.length > 0 }}" class="images">
+          <block wx:for="{{ item.images }}" wx:key="index" wx:for-item="img">
+            <view class="image-container {{ item.images.length === 1 ? 'single' : item.images.length === 2 || item.images.length === 4 ? 'double' : 'triple' }}">
+              <image class="image" src="{{ img }}" mode="{{ item.images.length === 1 ? 'aspectFill' : 'aspectFill' }}"></image>
+            </view>
+          </block>
+        </view>
+        <view class="time-address-box">
+          <text class="time">{{ item.createdAt }}</text>
+        </view>
+      </view>
+      <view class="operation-box">
+        <button class="operation share-button" plain="true" open-type="share" data-id="{{ item.id }}">
+          <image class="icon" src="/images/social/share.svg" mode="aspectFill" />
+          <text class="text">分享</text>
+        </button>
+        <view class="operation" bind:tap="likePost" data-id="{{ item.id }}">
+          <image wx:if="{{ item.isLiked }}" class="icon" src="/images/social/liked.svg" mode="aspectFill" />
+          <image wx:else class="icon" src="/images/social/like.svg" mode="aspectFill" />
+          <text class="text">{{ item.likesCount === 0 ? '点赞' : item.likesCount }}</text>
+        </view>
+        <view class="operation" bind:tap="navToDetail" data-id="{{ item.id }}">
+          <image class="icon" src="/images/social/coment.svg" mode="aspectFill" />
+          <text class="text">{{ item.commentsCount === 0 ? '评论' : item.commentsCount }}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+  <!-- 加载状态和无更多数据提示 -->
+  <view class="loading-container">
+    <view class="loading-indicator" wx:if="{{ loading }}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+    <view class="no-more-text" wx:if="{{ !hasMore && posts.length > 0 }}">— 没有更多内容了 —</view>
+    <view class="empty-tip" wx:if="{{ !loading && posts.length === 0 }}">暂无内容</view>
+  </view>
+  <!-- 发贴按钮 -->
+  <view class="publish-button" bind:tap="publishPost">
+    <image class="icon" src="/images/social/plus.svg" mode="aspectFill" />
+  </view>
+</view>
+<!-- 显示位置信息 -->
+<!-- <view class="address" wx:if="{{ item.location && item.location.name }}">
+  <text class="iconfont icon-place"></text>
+  <text>{{ item.location.name }}</text>
+</view> -->

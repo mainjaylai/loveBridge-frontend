@@ -1,0 +1,119 @@
+<view class="main">
+  <form bindsubmit="onSubmit">
+    <view class="page-header">
+      <view class="page-title">单身资料</view>
+      <view class="page-subtitle">完善资料可以获得更好的匹配</view>
+    </view>
+
+    <van-cell-group title="基本信息" custom-class="form-group">
+      <van-cell title="微信号" center custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" value="{{ formData.wechat }}" placeholder="请输入微信号" bind:change="onInputChange" data-field="wechat" border="{{ false }}" input-align="right" maxlength="{{30}}" />
+        </view>
+      </van-cell>
+      <view class="field-hint">方便小红娘牵线（不会展示给其他人）</view>
+    </van-cell-group>
+
+    <van-cell-group title="详细资料" custom-class="form-group">
+      <van-cell title="家乡" center custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" value="{{ formData.hometown }}" placeholder="例如: 四川成都" bind:change="onInputChange" data-field="hometown" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+        </view>
+      </van-cell>
+      <van-cell title="打算定居的城市" center custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" value="{{ formData.preferredCity }}" placeholder="例如: 北京" bind:change="onInputChange" data-field="preferredCity" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+        </view>
+      </van-cell>
+      <van-cell title="性取向" is-link bind:click="showPopup" data-field="orientation" center custom-class="form-cell" value="{{ formData.orientationLabel || '请选择' }}" />
+      <van-cell title="婚恋观" is-link bind:click="showPopup" data-field="relationshipView" center custom-class="form-cell" value="{{ formData.relationshipViewLabel || '请选择' }}" />
+      <van-cell title="婚姻状态" is-link bind:click="showPopup" data-field="maritalStatus" center custom-class="form-cell" value="{{ formData.maritalStatusLabel || '请选择' }}" />
+      <van-cell title="出生年份" is-link bind:click="showPopup" data-field="birthday" center custom-class="form-cell" value="{{ formData.birthdayLabel || '请选择' }}" />
+      <van-cell title="身高" center custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" type="number" value="{{ formData.height }}" placeholder="请输入" bind:change="onInputChange" data-field="height" border="{{ false }}" input-align="right" maxlength="{{3}}" />
+        </view>
+        <view slot="right-icon" class="unit-text">cm</view>
+      </van-cell>
+      <van-cell title="体重" center custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" type="number" value="{{ formData.weight }}" placeholder="请输入" bind:change="onInputChange" data-field="weight" border="{{ false }}" input-align="right" maxlength="{{3}}" />
+        </view>
+        <view slot="right-icon" class="unit-text">kg</view>
+      </van-cell>
+    </van-cell-group>
+
+    <van-cell-group title="教育与工作" custom-class="form-group">
+      <van-cell title="学历" is-link bind:click="showPopup" data-field="education" center custom-class="form-cell" value="{{ formData.educationLabel || '请选择' }}" />
+      <van-cell title="毕业院校" center custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" value="{{ formData.university }}" placeholder="请输入毕业院校" bind:change="onInputChange" data-field="university" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+        </view>
+      </van-cell>
+      <van-cell title="当前状态" is-link bind:click="showPopup" data-field="currentStatus" center custom-class="form-cell" value="{{ formData.currentStatusLabel || '请选择' }}" />
+      <van-cell title="专业" center custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" value="{{ formData.major }}" placeholder="请输入专业" bind:change="onInputChange" data-field="major" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+        </view>
+      </van-cell>
+      <van-cell title="工作类型" wx:if="{{ formData.currentStatus !== '在读' }}" is-link bind:click="showPopup" data-field="jobType" center custom-class="form-cell" value="{{ formData.jobTypeLabel || '请选择' }}" />
+      <van-cell title="工作方向/岗位" center wx:if="{{ formData.currentStatus !== '在读' }}" custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" value="{{ formData.jobTitle }}" placeholder="职位/职级" bind:change="onInputChange" data-field="jobTitle" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+        </view>
+      </van-cell>
+      <van-cell title="年收入" center wx:if="{{ formData.currentStatus !== '在读' }}" custom-class="form-cell">
+        <view slot="">
+          <van-field class="form-input" value="{{ formData.annualIncome }}" placeholder="请输入年收入" bind:change="onInputChange" data-field="annualIncome" border="{{ false }}" input-align="right" type="number" maxlength="{{10}}" />
+        </view>
+        <view slot="right-icon" class="unit-text">万元</view>
+      </van-cell>
+    </van-cell-group>
+
+    <van-cell-group title="自我介绍与择偶要求" custom-class="form-group">
+      <view class="textarea-wrapper">
+        <label class="textarea-label">关于我</label>
+        <van-field class="form-input textarea-field" value="{{ formData.aboutMe }}" type="textarea" placeholder="请填写最少30个字，可以介绍自己的婚恋观、性格特点（星座等）、兴趣爱好、家庭情况（比如是否独生子女）" maxlength="500" autosize show-word-limit bind:change="onInputChange" data-field="aboutMe" border="{{ false }}" />
+      </view>
+      <view class="field-hint">认真填写的同学可以获取免费牵线的机会</view>
+      <view class="textarea-wrapper">
+        <label class="textarea-label">对TA的要求</label>
+        <van-field class="form-input textarea-field" value="{{ formData.partnerRequirements }}" type="textarea" placeholder="请对TA提1~3个可量化的要求,比如身高175以上、本科以上学历、北京户口、年龄等" maxlength="300" autosize show-word-limit bind:change="onInputChange" data-field="partnerRequirements" border="{{ false }}" />
+      </view>
+    </van-cell-group> 
+
+    <van-cell-group title="个人照片" custom-class="form-group">
+      <view class="uploader-block">
+        <view class="uploader-title">我的照片</view>
+        <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:delete="onDeleteImage" max-count="3" accept="image" multiple upload-icon="photograph" />
+        <view class="uploader-hint">推荐上传1-3张个人正面生活照</view>
+        <view class="uploader-hint">请确保照片清晰美观、正面照、非合照</view>
+      </view>
+    </van-cell-group>
+
+    <van-cell-group title="资料共享" custom-class="form-group">
+      <view class="share-option">
+        <view class="share-title">您愿意共享您的部分资料吗</view>
+        <van-radio-group value="{{ formData.isVerified }}" bind:change="onShareOptionChange" direction="horizontal" custom-class="radio-group">
+          <van-radio name="true" custom-class="share-radio" checked-color="#3cc51f">愿意</van-radio>
+          <van-radio name="false" custom-class="share-radio" checked-color="#3cc51f">不愿意</van-radio>
+        </van-radio-group>
+        <view class="field-hint share-hint">仅共享年龄、学校、学历、个人介绍、择偶要求，不涉及隐私，即可查看所有异性共享资料库</view>
+      </view>
+    </van-cell-group>
+    
+    <view class="bottom-space"></view>
+  </form>
+  
+  <view class="submit-btn-wrapper">
+    <van-button class="primary-button submit-btn" bind:tap="onSubmit" color="linear-gradient(to right, #3cc51f, #39b54a)">保存资料</van-button>
+  </view>
+  
+  <!-- 弹出选择器 -->
+  <van-popup show="{{ showPickerPopup }}" position="bottom" bind:close="closePopup" round>
+    <van-picker show-toolbar title="{{ pickerTitle }}" columns="{{ pickerColumns }}" bind:cancel="closePopup" bind:confirm="onPickerConfirm" value-key="{{ pickerValueKey }}" />
+  </van-popup>
+  
+  <!-- Toast -->
+  <van-toast id="van-toast" />
+</view>

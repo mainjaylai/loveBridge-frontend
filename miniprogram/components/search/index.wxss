@@ -1,0 +1,82 @@
+.custom-search {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 30rpx;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.search-content {
+  display: flex;
+  align-items: center;
+  padding: 0 20rpx;
+  background-color: #f7f8fa;
+  border-radius: 4rpx;
+  height: 72rpx;
+  flex: 1;
+}
+
+.search-content.round {
+  border-radius: 36rpx;
+}
+
+.search-icon,
+.clear-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.svg-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36rpx;
+  height: 36rpx;
+}
+
+/* 字体图标样式 */
+@font-face {
+  font-family: "iconfont";
+  src: url("data:font/woff2;charset=utf-8;base64,d09GMgABAAAAAAMsAA0AAAAABygAAALVAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4GYACCShEICoJcggoLDgABNgIkAxQEIAWFAgdOG58HyJ4DceOUlERh5qPo/Eyd7f9LUJSoBa2r6F1FJDKR4JGIhMRDIrHoabvf3POXZDtMTdIJlWSCR4LHo0IiKtGu87D4PpeZf66lUdIl9YPixZfn2ZelcwWS0/0TWEABFJBYYBEHiMwBS4A2xi6wnMBlIMAB1joSAPDa2h4DcEL3kwDY0tQp4JK0AoGC9ghQyAQF8QTIJcxL29K3LhG3n09eZ7oAIYhCSGGSVKde2j9M+7DzP+f/KQBwgAZQAS6g8qWVdQplk1VaJeuVGnGjRsbKXL5eoWVl2E4kkQS4CGJ/PPJFAEquATgEFXhG1IYHXhz5p5iBmv12yGP85TPxe4YvKXbRWD8+Mh7y86PhHC+NCp8cXhWObk0LnRYyXDYUGCyY9PQlQ0/PPxw+OdorJjz3YjBQfLBEX37UfeqXPmO0QF/R8rOj1aXh8MGK8MSoMTJ8JHSwnmDkR+VQRDCfmPkLjrMhUd5YqzhcZTk32jyYNXuGzEQmRfuGRDEJkTEycLAJ/4VvCf83ZhBm9xg4iDFVyB0ZIWNgRJhDWGisR2R8VJTXPC8/f2mkb5j0vNDwGSKCoyXnIjGHzCCJ8JqK8fUS8w6TOiMzyGu+j2+YwfVxnl5eo8S85nnP8/aaGkCAQ9ABAVKQiDVeq0eV8k8aSCu8iriKBj9TUSFrNVaRNcYGh0p8o7zDBHxmTYnxjpgXLRYtPGbCvAD/gNlhYmJT5siJxIiGj5w8Wdr7bCmR+XPCp8nMnYMmLzZLb7JwbPCsGP9gkZmC00JmRoXMk4rw858SGy4i4OMfNxYArAAAQEtSHgHfhUX6m3V1Ck4BAAD0/9HdA5SHA8Cl7MVE5qWfPX8CEIB6JYD/mBxoAIAHEbhrAnAz9KZ/qQo6HEyZzI7x7/vP1VbUedRbNP68jCQFjS8AgE/AAKAAOoAJcASugAcQDBxYLAgHCWtSG3JYQQUiiNhkGY1spBMcYrLDYSeq4BDbVk2SkiQgUYQkJYulJRlsIgv9u8Om9ow28lEdEtoD9xW6c/fuOp0QNJQHGnRHnbxBVm3TMEzTMnS8atehnOY9PG7nNZ82pCgZbOhX1qirzZHoXmrTGIPPFe+X0vqmYVEPpnFNbbjDrulpWPmB7vLAcpfv2SgvQWPM+QLNDY+gL2j5JKrxWWcZhiGXdaNm0Hb7NMqR8TxoOD2t0zc0SKHEX9CHMiM7rVZIaJ5UM9R5ODYkFdWFb0MN0IaZ2Kdh6NLi0bvWgQXNOX6cVmleF2XVTGEKZZcrxS7vqxqGMTOgbjCGMPUd3SY+T60xbNO2bLzT17R13eraapbfNayDYnNwxlYt47Rw2DhJAAAA")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 32rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #999;
+}
+
+.icon-search:before {
+  content: "\e622";
+}
+
+.icon-clear:before {
+  content: "\e63e";
+}
+
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  padding: 0 16rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.search-action {
+  padding-left: 20rpx;
+  font-size: 28rpx;
+  color: #07c160;
+}
+
+.action-text {
+  padding: 0 4rpx;
+}

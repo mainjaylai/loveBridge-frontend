@@ -1,0 +1,109 @@
+<view class="main">
+  <image class="profile-bg" src="/images/public-profile-bg@3x-zip.png" mode="widthFix" />
+  <view class="gradient-bg"></view>
+  <!-- 顶部区域（状态栏 + 导航栏） -->
+  <view class="top-section" style="height: {{navBarHeight}}px; background-color: {{navBg}};">
+    <!-- 状态栏占位 -->
+    <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+    <!-- 导航栏内容 -->
+    <view class="nav-bar">
+      <image src="/images/arrow-left.svg" class="icon" bind:tap="navBack" mode="aspectFill"></image>
+      <text class="nav-bar-inner">{{ userInfo.nickname }}</text>
+      <view class="icon"></view>
+    </view>
+  </view>
+  <view class="signature-container">
+    <image src="/images/quotation-mark.svg" class="icon" mode="aspectFill"></image>
+    <view class="text">{{ userInfo.signature || 'Ta还没有设置签名哦~'}}</view>
+  </view>
+  <view class="profile-user-box">
+    <view class="main-info">
+      <view class="avatar-ring">
+        <view class="avatar-box">
+          <image class="avatar" src="{{userInfo.avatar || DEFAULT_USER_AVATAR}}"></image>
+          <view wx:if="{{userInfo.gender !== 0}}" class="icon-box {{userInfo.gender === 1 ? 'man' : userInfo.gender === 2 ? 'woman' : ''}} ">
+            <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[userInfo.gender]}}" mode="aspectFill"/>
+          </view>
+        </view>
+      </view>
+      <view class="base-info-box">
+        <view class="nickname-row">
+          <text class="nickname">{{userInfo.nickname || DEFAULT_USER_NICKNAME}}</text>
+          <!-- 关系状态和关注按钮 - 仅当不是自己时显示 -->
+          <block wx:if="{{ !isMe }}">
+            <block wx:if="{{userInfo.relationType === 0}}">
+              <view class="btn follow-btn" bind:tap="toggleFollowStatus">关注</view>
+            </block>
+            <block wx:elif="{{userInfo.relationType === 1}}">
+              <!-- <view class="relation-tag followed">已关注</view> -->
+              <view class="btn unfollow-btn" bind:tap="toggleFollowStatus">取关</view>
+            </block>
+            <block wx:elif="{{userInfo.relationType === 2}}">
+              <view class="btn follow-btn" bind:tap="toggleFollowStatus">粉丝</view>
+            </block>
+            <block wx:elif="{{userInfo.relationType === 3}}">
+              <view class="btn unfollow-btn" bind:tap="toggleFollowStatus">好友</view>
+            </block>
+          </block>
+        </view>
+        <view class="real-row">
+          <text class="item">{{userInfo.birthday || '**年'}}</text>
+          <text class="item">{{userInfo.university || '****大学'}}</text>
+          <text class="item">{{userInfo.profession || ''}}</text>
+        </view>
+        <view class="others-row">
+          <view wx:if="{{userInfo.starSign}}" class="label label-{{userInfo.gender === 2 ? 'pink' : 'blue'}}">{{ userInfo.starSign }}</view>
+          <view wx:if="{{userInfo.mbti}}" class="label label-{{userInfo.gender === 2 ? 'pink' : 'blue'}}">{{ userInfo.mbti }}</view>
+        </view>
+      </view>
+    </view>
+    <view class="tags-container">
+      <scroll-view scroll-x="true" show-scrollbar="false" enhanced="true">
+        <view class="list">
+          <block wx:if="{{ userInfo.tags && userInfo.tags.length > 0 }}">
+            <block wx:for="{{ userInfo.tags }}" wx:key="index">
+              <view class="label">
+                <image class="icon" src="/images/social/topic.svg" mode="aspectFill" />
+                <text class="text">{{ item }}</text>
+              </view>
+            </block>
+          </block>
+          <block wx:else>
+            <view class="label">
+              <image class="icon" src="/images/tips.svg" mode="aspectFill" />
+              <text class="text">Ta还没有对外展示的标签~</text>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="tags-bottom-space"></view>
+  </view>
+    
+  <!-- <view class="sign-card">{{ userInfo.signature }}</view> -->
+  <view class="posts-card">
+    <block wx:for="{{ posts }}" wx:key="id">
+      <view class="post-item" bind:tap="navToDetail" data-id="{{item.id}}">
+        <view class="createdAt-row">
+          <text class="createdAt">{{ item.createdAt }}</text>
+        </view>
+        <view class="social-content-box">
+          <view class="content">
+            <text>{{ item.content }}</text>
+            <block wx:for="{{ item.tags }}" wx:key="index" wx:for-item="tag">
+              <text space="nbsp" class="tag"> #{{ tag }}</text>
+            </block>
+          </view>
+          <view class="images">
+            <block wx:for="{{ item.images }}" wx:key="index" wx:for-item="img">
+              <view class="image-container {{ item.images.length === 1 ? 'single' : item.images.length === 2 || item.images.length === 4 ? 'double' : 'triple' }}">
+                <image class="image" src="{{ img }}" mode="aspectFill"></image>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view class="page-bottom-space"></view>
+  </view>
+</view>

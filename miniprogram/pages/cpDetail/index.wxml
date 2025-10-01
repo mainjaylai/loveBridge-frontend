@@ -1,0 +1,133 @@
+<wxs module="utils" src="../utils.wxs" />
+<view class="main">
+  <van-cell-group title="基本信息（必填）">
+    <van-cell custom-class="van-cell-avatar" title="头像" center>
+      <view slot="">
+        <van-button class="avatar-container" type="info" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{ cpInfo.avatar === '' ? DEFAULT_USER_AVATAR : cpInfo.avatar}}"></image>
+        </van-button>
+      </view>
+    </van-cell>
+    <van-cell title="姓名" center>
+      <view slot="">
+        <van-field class="form-input" value="{{ cpInfo.realName }}" placeholder="请输入真实姓名" bind:change="onInputChange" data-id="realName" border="{{ false }}" input-align="right" maxlength="{{10}}" />
+      </view>
+    </van-cell>
+    <van-cell value-class="van-cell-value" title="性别" value="{{userGender}}" is-link bind:click="showPopupPannel" data-id="gender"></van-cell>
+    <van-cell value-class="van-cell-value" title="身高/cm" value="{{cpInfo.height}}" is-link bind:click="showPopupPannel" data-id="height"></van-cell>
+    <van-cell value-class="van-cell-value" title="体重/kg" value="{{cpInfo.weight}}" is-link bind:click="showPopupPannel" data-id="weight"></van-cell>
+    <van-cell value-class="van-cell-value" title="生日" value="{{userBirthdayLabel}}" is-link bind:click="showPopupPannel" data-id="birthday"></van-cell>
+  </van-cell-group>
+  <van-cell-group title="学历信息（必填）">
+    <van-cell value-class="van-cell-value" title="学校" value="{{cpInfo.university}}" is-link bind:click="showPopupPannel" data-id="university"></van-cell>
+    <van-cell value-class="van-cell-value" title="学历" value="{{cpInfo.education}}" is-link bind:click="showPopupPannel" data-id="education"></van-cell>
+    <van-cell value-class="van-cell-value" title="毕业年份" value="{{cpInfo.graduationYear}}" is-link bind:click="showPopupPannel" data-id="graduationYear" default-index="{{ 10 }}"></van-cell>
+  </van-cell-group>
+  <van-cell-group title="联系方式（必填）">
+    <van-cell title="手机号码" center>
+      <view slot="">
+        <van-field class="form-input" type="number" value="{{ cpInfo.phone }}" placeholder="请输入真实号码" bind:change="onInputChange" data-id="phone" border="{{ false }}" input-align="right" maxlength="{{15}}" />
+      </view>
+    </van-cell>
+    <van-cell title="微信号" center>
+      <view slot="">
+        <van-field class="form-input" value="{{ cpInfo.wechat }}" placeholder="请输入微信号" bind:change="onInputChange" data-id="wechat" border="{{ false }}" input-align="right" maxlength="{{10}}" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <van-cell-group title="基本标签（必填）">
+    <van-cell title="昵称" center>
+      <view slot="">
+        <van-field class="form-input" type="nickname" value="{{ cpInfo.nickname }}" placeholder="请输入用户名" bind:change="onInputChange" data-id="nickname" border="{{ false }}" input-align="right" maxlength="{{20}}" />
+      </view>
+    </van-cell>
+    <van-cell value-class="van-cell-value" title="兴趣爱好" value="{{userTags}}" is-link bind:click="showTagsPopupPannel" data-id="tags"></van-cell>
+  </van-cell-group>
+  <van-cell-group title="认证（可选）">
+
+
+  </van-cell-group>
+  <van-cell-group title="玄学交友（选填）">
+    <van-cell value-class="van-cell-value" title="星座" value="{{cpInfo.starSign}}" is-link bind:click="showPopupPannel" data-id="starSign"></van-cell>
+    <van-cell value-class="van-cell-value" title="MBTI" value="{{cpInfo.mbti}}" is-link bind:click="showPopupPannel" data-id="mbti"></van-cell>
+  </van-cell-group>
+  <van-cell-group title="现实交友（选填）">
+    <van-cell value-class="van-cell-value" title="专业类别" value="{{cpInfo.profession}}" is-link bind:click="showPopupPannel" data-id="profession"></van-cell>
+    <van-cell value-class="van-cell-value" title="家乡" value="{{userHomeTownLabel}}" is-link bind:click="showPopupPannel" data-id="hometown"></van-cell>
+    <van-cell value-class="van-cell-value" title="居住地" value="{{userLiveInLabel}}" is-link bind:click="showPopupPannel" data-id="liveIn"></van-cell>
+  </van-cell-group>
+  <van-cell-group title="期望CP">
+    <van-cell value-class="van-cell-value" title="生年区间" value="{{userBirthYearCPLabel}}" is-link bind:click="showPopupPannel" data-id="birthYearCP"></van-cell>
+    <van-cell value-class="van-cell-value" title="身高区间" value="{{userHeightCPLabel}}" is-link bind:click="showPopupPannel" data-id="heightCP"></van-cell>
+    <van-cell value-class="van-cell-value" title="学校" value="{{cpInfo.universityCP}}" is-link bind:click="showPopupPannel" data-id="universityCP"></van-cell>
+    <van-cell value-class="van-cell-value" title="学历" value="{{cpInfo.educationCP}}" is-link bind:click="showPopupPannel" data-id="educationCP"></van-cell>
+    <van-cell value-class="van-cell-value" title="在学状态" value="{{cpInfo.studyStatusCP}}" is-link bind:click="showPopupPannel" data-id="studyStatusCP"></van-cell>
+  </van-cell-group>
+  <view class="button-box">
+    <view class="button primary-button" bind:tap="onSave">提交</view>
+  </view>
+  <view class="page-bottom-space"></view>
+  <!-- bottom popup -->
+  <van-popup show="{{ showPopup }}" position="bottom" bind:close="onPopupClose" round custom-style="{{ curProperty === 'university' ? 'height: 1200rpx;' : '' }}">
+    <block wx:if="{{ curProperty !== 'university' }}">
+      <block wx:if="{{ curProperty !== 'birthday' }}">
+        <block wx:if="{{ curProperty !== 'hometown' && curProperty !== 'liveIn' }}">
+          <van-picker show-toolbar bind:cancel="onPopupClose" bind:confirm="onPickerConfirm" columns="{{currentPickerOptions}}" />
+        </block>
+        <block wx:else>
+          <van-area area-list="{{ areaList }}" value="{{  cpInfo[curProperty] }}" bind:cancel="onPopupClose" bind:confirm="onAreaConfirm" />
+        </block>
+      </block>
+      <block wx:else>
+        <van-datetime-picker
+          type="date"
+          value="{{ userBirthday }}"
+          min-date="{{ birthdayPickerMinDate }}"
+          max-date="{{ birthdayPickerMaxDate }}"
+          bind:cancel="onPopupClose"
+          bind:confirm="onBirthdayConfirm"
+        />
+      </block>
+    </block>
+    <block wx:else>
+      <view class="university-search-popup">
+        <view class="popup-header">
+          <text class="popup-title">选择学校</text>
+          <view class="close-btn" bind:tap="onPopupClose">
+            <van-icon name="cross" size="20px" />
+          </view>
+        </view>
+        <view class="search-container">
+          <van-search custom-class="university-search" value="{{ searchKeyword }}" placeholder="请输入学校名称" bind:change="onSearchChange" bind:search="onSearchConfirm" bind:blur="onSearchBlur" bind:keyboardheightchange="onKeyboardHeightChange" adjust-position="{{false}}" focus="{{false}}" confirm-type="search" show-action="{{false}}" shape="round" input-class="search-input" />
+        </view>
+        <view class="scroll-container">
+          <scroll-view scroll-y class="university-scroll">
+            <van-cell-group>
+              <block wx:if="{{ filteredUniversities.length > 0 }}">
+                <van-cell wx:for="{{ filteredUniversities }}" wx:key="value" title="{{ item.label }}" bind:click="onUniversitySelect" data-value="{{ item.value }}" data-label="{{ item.label }}" />
+              </block>
+              <block wx:else>
+                <view class="empty-result">
+                  <text>没有找到匹配的学校</text>
+                </view>
+              </block>
+            </van-cell-group>
+          </scroll-view>
+        </view>
+      </view>
+    </block>
+  </van-popup>
+  <van-popup show="{{ showTagsPopup }}" position="bottom" bind:close="onTagsPopupClose" round closeable>
+    <view class="bottom-popup-container">
+      <view class="title-row">兴趣爱好（多选）</view>
+      <view class="content">
+        <view class="list">
+          <block wx:for="{{ TAGS }}" wx:key="index">
+            <view class="label {{ utils.includesStr(cpInfo.tags, item) ? 'label-green' : '' }}" bind:tap="onClickLabelPool" data-id="{{ item }}">{{ item }}</view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+  <van-toast id="van-toast" />
+</view>

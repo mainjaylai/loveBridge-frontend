@@ -1,0 +1,341 @@
+/** detail.less **/
+.rich-text {
+  text-align: justify;
+  line-height: 1.5;
+}
+.activity-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.detail-container {
+  background-color: @bg-gray-color-2;
+  position: relative;
+}
+.top-section {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  .nav-bar {
+    height: 88rpx; /* 导航栏标准高度 */
+    padding: 14rpx 32rpx;
+    justify-content: space-between;
+    align-items: flex-start;
+    line-height: 44rpx;
+    box-sizing: border-box;
+    .nav-title {
+      flex: 1;
+      text-align: center;
+    }
+    .nav-placeholder {
+      width: 32rpx;
+    }
+  }
+}
+
+.top-swiper {
+  height: 420rpx;
+
+  .swiper-item-box {
+    position: relative;
+  }
+  .swiper-item-content {
+    position: absolute;
+    color: #fff;
+  }
+  .swiper-item-image {
+    width: 100%;
+    height: 420rpx;
+    display: block; // 解决图片底部的4px空白
+  }
+}
+.base-info-container {
+  position: relative;
+  z-index: 100;
+  padding: 32rpx;
+  background-color: #fff;
+  border-radius: 28rpx 28rpx 0 0;
+  margin-top: -32rpx;
+  margin-bottom: 12rpx;
+
+  .other-elements {
+    justify-content: flex-start;
+    margin-top: 28rpx;
+    background: linear-gradient(90deg, @bg-gray-color-2 0%, rgba(252, 252, 253, 0) 100%);
+    border-radius: 12rpx;
+    padding: 8rpx;
+    font-size: @fs-4;
+    line-height: 36rpx;
+    .other-elements-item {
+      .activity-icon  {
+        margin-right: 4rpx;
+      }
+    }
+    .divider {
+      width: 1px;
+      height: 24rpx;
+      margin: 0 14rpx 0 16rpx;
+      opacity: 0.1;
+      background: @black-color;
+    }
+  }
+  .divider {
+    width: 100%;
+    height: 1rpx;
+    margin-top: 48rpx;
+    opacity: 0.1;
+    background: @black-color;
+  }
+  .base-unit {
+    margin: 36rpx 0 8rpx 0;
+    .title-row {
+      font-size: @fs-4;
+      font-weight: 600;
+      margin-bottom: 16rpx;
+    }
+    .list {
+      justify-content: flex-start;
+      gap: 16rpx;
+
+      .item {
+        padding: 30rpx 32rpx;
+        flex-shrink: 0;
+        border-radius: 12rpx;
+        background: @bg-gray-color-2;
+        border: 1px solid @bg-gray-color-2;
+        font-size: @fs-4;
+        font-weight: 600;
+      }
+      .active {
+        background: #E1FAD4;
+        border: 1px solid @black-color;
+      }
+      .disabled {
+        opacity: 0.4;
+      }
+    }
+  }
+  .member-unit {
+    .member-list {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 16rpx;
+    }
+    .member {
+      flex-shrink: 0;
+      width: 128rpx;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      .avatar-box {
+        position: relative;
+        width: 80rpx;
+        height: 80rpx;
+        .avatar {
+          width: 80rpx;
+          height: 80rpx;
+          border-radius: 100%;
+        }
+        .icon-box {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 28rpx;
+          height: 28rpx;
+          border-radius: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .icon {
+            width: 24rpx;
+            height: 24rpx;
+          }
+        }
+        .man {
+          background-color: @blue-color;
+        }
+        .woman {
+          background-color: @pink-color;
+        }
+      }
+      .nickname {
+        font-weight: 600;
+        font-size: 24rpx;
+        margin: 4rpx 0;
+        text-align: center;
+      }
+      .university {
+        font-size: 20rpx;
+        color: @fc-gray2;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.tab {
+  box-sizing: border-box;
+  min-height: calc(100vh - 44px - 97px - 107px);
+}
+
+.highlights-container {
+  padding: 32rpx;
+  background-color: #fff;
+
+  .highlight-box {
+    margin-bottom: 52rpx;
+
+    .title-row {
+      margin-bottom: 24rpx;
+      .pink-divider {
+        width: 120rpx;
+        height: 33rpx;
+        display: block;
+      }
+      .right {
+        transform: rotate(180deg); 
+      }
+      .title {
+        margin: 0 20rpx;
+        font-weight: 600;
+        font-size: @fs-2;
+        color: @pink-color;
+      }
+    }
+    .content {
+      line-height: 1.5;
+    }
+    .highlight-item-image {
+      width: 100%;
+      margin-top: 12rpx;
+      display: block;
+    }
+  }
+}
+
+// .journey-title {
+//   background-color: #fff;
+//   font-size: large;
+//   font-weight: bold;
+//   padding: 16px;
+//   margin-bottom: 8px;
+//   .iconfont {
+//     font-size: large;
+//     margin-right: 5px;
+//   }
+// }
+
+.journey-container {
+  background-color: #fff;
+  padding: 32rpx;
+  .activity-name {
+    font-size: @fs-2;
+  }
+  .day-content {
+    margin: 16rpx 0 48rpx 0;
+  }
+  .stage-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 12rpx;
+    margin-bottom: 1rpx;
+    .activity-icon {
+      margin-right: 30rpx;
+    }
+    .stage-title {
+      font-weight: 600;
+      line-height: 1.5;
+    }
+  }
+  .stage-content {
+    padding-left: 30rpx;
+    position: relative;
+    margin-bottom: 16rpx;
+    .content {
+      width: 100%;
+      position: relative;
+      padding-left: 50rpx;
+    }
+    .content::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 16rpx;    /* 上边缩进 5px */
+      bottom: 16rpx; /* 下边缩进 5px */
+      width: 0;    /* 仅用 border 绘制线 */
+      border-left: 1px dashed @black-color; /* 虚线样式 */
+    }
+  }
+}
+
+.fee-card {
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 2rpx;
+    .activity-icon {
+      margin-right: 12rpx;
+    }
+    .title {
+      font-weight: 600;
+      line-height: 1.5;
+    }
+  }
+  .content {
+    margin: 0 0 32rpx 50rpx;
+    padding-bottom: 32rpx;
+    line-height: 1.5;
+  }
+  .border {
+    border-bottom: 1px solid #E4E4E4;
+  }
+}
+
+.fee-tab {
+  background-color: #fff;
+  padding: 32rpx;
+}
+
+.notice-tab {
+  background-color: #fff;
+  padding: 32rpx;
+  .notice-card {
+    .van-cell {
+      padding: 20rpx 0 !important;
+    }
+  }
+}
+
+.leaders-container {
+  margin-top: 12rpx;
+  background-color: #fff;
+  padding: 32rpx;
+  .title-row {
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .people-card-content {
+    margin-top: 16rpx;
+  }
+}
+
+.submit-bar {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px -4px 12px;
+}
+
+.bottom-popup-container {
+  .rich-text {
+    font-size: @fs-4;
+  }
+}
+
+.shared-icon {
+  width: 40rpx;
+  height: 40rpx;
+  color: black;
+  opacity: 1;
+}

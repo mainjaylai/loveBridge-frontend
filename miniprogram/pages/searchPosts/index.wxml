@@ -1,0 +1,38 @@
+<view class="page-main">
+    <!-- 搜索框 -->
+    <view class="search-container">
+        <custom-search value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onSearchChange" bind:search="onSearch" bind:cancel="handleCancel" shape="round" show-action action-text="搜索" background="#ffffff" />
+    </view>
+    <!-- 搜索结果 -->
+    <view class="results-container">
+        <block wx:if="{{ loading }}">
+            <view class="loading-indicator">
+                <view class="loading-spinner"></view>
+                <text class="loading-text">搜索中...</text>
+            </view>
+        </block>
+        <block wx:elif="{{ !keyword }}">
+            <view class="empty-tip">请输入关键词进行搜索</view>
+        </block>
+        <block wx:elif="{{ posts.length === 0 && !keyword }}">
+            <view class="empty-tip">未找到相关内容</view>
+        </block>
+        <block wx:else>
+            <view class="results-list">
+                <block wx:for="{{ posts }}" wx:key="id">
+                    <view class="post-item" bind:tap="navToDetail" data-id="{{ item.id }}">
+                        <view class="post-content">
+                            <rich-text nodes="{{ item.highlightedContent }}"></rich-text>
+                        </view>
+                        <view class="post-stats">
+                            <text class="post-stat">{{ item.likesCount }}赞</text>
+                            <text class="post-stat">{{ item.commentsCount }}评论</text>
+                        </view>
+                        <view class="horizontal-divider"></view>
+                    </view>
+                </block>
+            </view>
+        </block>
+    </view>
+    <van-toast id="van-toast" />
+</view>

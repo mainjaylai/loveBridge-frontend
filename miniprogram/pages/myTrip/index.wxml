@@ -1,0 +1,7 @@
+<view class="order-container">
+  <view class="order-item" wx:for="{{tourScheduleMembers}}" wx:key="id">
+    <view class="order-item-left">
+      <image class="order-item-image" src="{{item.cover}}" mode="aspectFill"></image>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,261 @@
+.main {
+  padding-bottom: 120rpx;
+  background-color: @bg-gray-color-2;
+}
+
+.form-input {
+  /* 去除 van-field 上下内边距 */
+  padding: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  
+  .van-field__body {
+    min-height: 12px;
+  }
+}
+
+.field-hint {
+  font-size: 24rpx;
+  color: @fc-gray2;
+  padding: 8rpx 32rpx 24rpx;
+  background-color: #fff;
+  font-style: italic;
+}
+
+.uploader-block {
+  padding: 32rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  
+  .uploader-title {
+    font-size: 30rpx;
+    font-weight: 500;
+    margin-bottom: 24rpx;
+  }
+  
+  .uploader-hint {
+    font-size: 24rpx;
+    color: @fc-gray2;
+    margin-top: 16rpx;
+    line-height: 1.6;
+  }
+}
+
+.submit-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx 32rpx;
+  background-color: #fff;
+  border-top: 1rpx solid @border-gray-color;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  
+  .submit-btn {
+    width: 100%;
+    height: 88rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32rpx;
+    font-weight: 600;
+    border-radius: 44rpx;
+    background: linear-gradient(to right, #3cc51f, #39b54a);
+    transition: all 0.3s;
+    
+    &:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+  }
+}
+
+.share-radio {
+  margin-right: 32rpx;
+}
+
+.van-radio__icon--checked .van-icon {
+  background-color: #3cc51f !important;
+  border-color: #3cc51f !important;
+  border-radius: 50% !important;
+}
+
+// 自定义van-field样式
+.van-cell {
+  padding: 32rpx 32rpx !important;
+  position: relative;
+}
+
+.van-cell::after {
+  content: '';
+  position: absolute;
+  left: 32rpx;
+  right: 0;
+  bottom: 0;
+  height: 1rpx;
+  background-color: @border-gray-color;
+  transform: scaleY(0.5);
+}
+
+.van-cell:last-child::after {
+  display: none;
+}
+
+.van-field__input {
+  text-align: right !important;
+  font-size: 28rpx !important;
+}
+
+.van-cell__title {
+  font-weight: 500;
+}
+
+.unit-text {
+  margin-left: 10rpx;
+  color: #969799;
+}
+
+// 组样式美化
+.van-cell-group {
+  margin: 24rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+// 标题美化
+.van-cell-group__title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  padding: 32rpx 24rpx 16rpx;
+  position: relative;
+  margin-left: 12rpx;
+}
+
+.van-cell-group__title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 38rpx;
+  width: 8rpx;
+  height: 32rpx;
+  background: linear-gradient(to bottom, #3cc51f, #39b54a);
+  border-radius: 4rpx;
+  margin-left: -12rpx;
+}
+
+// 文本域样式
+textarea.van-field__input {
+  text-align: left !important;
+  min-height: 120rpx !important;
+  padding: 8rpx 0;
+  line-height: 1.6;
+}
+
+// 文本域美化
+.textarea-wrapper {
+  padding: 24rpx 32rpx;
+  background-color: #fff;
+
+  .textarea-label {
+    display: block;
+    font-size: 30rpx;
+    margin-bottom: 16rpx;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .van-field__word-limit {
+    color: @fc-gray2;
+    font-size: 24rpx;
+    margin-top: 8rpx;
+  }
+}
+
+// 自定义Picker美化
+.van-picker__toolbar {
+  height: 100rpx;
+}
+
+.van-picker__cancel,
+.van-picker__confirm {
+  font-size: 32rpx;
+  padding: 0 32rpx;
+}
+
+.van-picker__confirm {
+  color: #3cc51f;
+}
+
+.van-cell--large .van-cell__title {
+  font-size: 30rpx;
+} 
+
+// 页面头部样式
+.page-header {
+  padding: 48rpx 32rpx 32rpx;
+  background-color: #fff;
+  text-align: center;
+  margin-bottom: 24rpx;
+  
+  .page-title {
+    font-size: 40rpx;
+    font-weight: bold;
+    margin-bottom: 16rpx;
+    color: #333;
+  }
+  
+  .page-subtitle {
+    font-size: 28rpx;
+    color: @fc-gray2;
+  }
+}
+
+// 表单组样式
+.form-group {
+  margin-bottom: 24rpx;
+}
+
+// 表单项样式
+.form-cell {
+  transition: background-color 0.3s;
+  
+  &:active {
+    background-color: #f9f9f9;
+  }
+}
+
+// 文本域字段样式优化
+.textarea-field {
+  background-color: #f9f9f9;
+  border-radius: 8rpx;
+  padding: 16rpx !important;
+  margin: 8rpx 0;
+}
+
+// 共享选项样式
+.share-option {
+  padding: 32rpx;
+  background-color: #fff;
+  
+  .share-title {
+    font-size: 30rpx;
+    font-weight: 500;
+    margin-bottom: 24rpx;
+  }
+  
+  .radio-group {
+    margin-bottom: 16rpx;
+  }
+  
+  .share-hint {
+    padding: 0;
+    background-color: transparent;
+  }
+}
+
+// 底部间距
+.bottom-space {
+  height: 140rpx;
+} 

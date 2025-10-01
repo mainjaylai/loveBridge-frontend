@@ -1,0 +1,243 @@
+<view class="detail-container" binsc>
+  <!-- 顶部区域（状态栏 + 导航栏）mxwtodo: qufan -->
+  <!-- <view class="top-section" style="height: {{navBarHeight}}px;">
+    <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+    <view class="flex nav-bar">
+      <text class="iconfont icon-arrow-right"></text>
+      <text class="nav-title">青衫爱旅行</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view> -->
+  <swiper class="top-swiper" indicator-active-color="#79F138" indicator-color='rgba(34, 34, 34, .3)' display-multiple-items='1' autoplay='true' circular='true' interval='2000'>
+    <block wx:for="{{activity.images}}" wx:key="index">
+      <swiper-item>
+        <view class='swiper-item-box'>
+          <!-- <text class='swiper-item-content'>{{item.content}}</text> -->
+          <image class="swiper-item-image" src="{{item}}" mode="aspectFill" bind:tap="previewSwiperImages" data-url="{{item}}" />
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="base-info-container">
+    <view class="flex activity-title-row">
+      <view class="flex activity-duration">{{activity.duration}}天</view>
+      <text class="activity-name">{{activity.title}}</text>
+    </view>
+    <text class="activity-description">{{activity.content}}</text>
+    <view class="flex other-elements">
+      <view class="flex other-elements-item place">
+        <image class="activity-icon" src="/images/activity-baseinfo/place.svg" mode="aspectFill" />
+        <text>{{activity.place}}</text>
+      </view>
+      <view class="divider"></view>
+      <view class="flex other-elements-item leader">
+        <image class="activity-icon" src="/images/activity-baseinfo/leader.svg" mode="aspectFill" />
+        <view>{{activity.tourSchedules[curTourIndex].leaders[0].nickname}}</view>
+      </view>
+      <view class="divider"></view>
+      <view class="flex other-elements-item people">
+        <image class="activity-icon" src="/images/activity-baseinfo/people.svg" mode="aspectFill" />
+        <view>
+          {{activity.tourSchedules[curTourIndex].minPeople}}-{{activity.tourSchedules[curTourIndex].maxPeople}}人
+        </view>
+      </view>
+    </view>
+    <view class="divider"></view>
+    <!-- 选择团期 -->
+    <view class="base-unit">
+      <view class="title-row">选择团期</view>
+      <scroll-view scroll-x="true" show-scrollbar="false" enhanced="true">
+        <view class="flex list">
+          <block wx:for="{{activity.tourSchedules}}" wx:key="index">
+            <view class="item {{curTourIndex === index ? 'active':''}} {{item.valid ? '' : 'disabled'}}" bindtap="updateCurTourIndex" data-index="{{index}}">
+              {{item.tourScheduleLabel}}
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="base-unit" wx:if="{{ activity.meetingPoint.length > 0  }}">
+      <view class="title-row">选择集合点</view>
+      <scroll-view scroll-x="true" show-scrollbar="false" enhanced="true">
+        <view class="flex list">
+          <block wx:for="{{activity.meetingPoint}}" wx:key="index">
+            <view class="item {{curPointIndex === index ? 'active':''}}" bindtap="updateCurPointIndex" data-index="{{index}}">
+              {{item}}
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+    <!-- 活动成员 -->
+    <view wx:if="{{activity.tourSchedules[curTourIndex].members && activity.tourSchedules[curTourIndex].members.length > 0}}" class="base-unit member-unit">
+      <view class="title-row">
+        {{activity.tourSchedules[curTourIndex].members.length}}人已报名
+        <!-- <text class="iconfont icon-arrow-right"></text> -->
+      </view>
+      <scroll-view scroll-x="true" show-scrollbar="false" enhanced="true">
+        <view class="member-list">
+          <block wx:for="{{activity.tourSchedules[curTourIndex].members}}" wx:key="id">
+            <view class="member" bind:tap="navToUserDetail" data-id="{{item.id}}">
+              <view class="avatar-box">
+                <image class="avatar" src="{{item.avatar}}"></image>
+                <!-- 1男 2女 0 不展示 -->
+                <view wx:if="{{item.gender !== 0}}" class="icon-box {{item.gender === 1 ? 'man' : item.gender === 2 ? 'woman' : ''}} ">
+                  <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[item.gender]}}" mode="aspectFill" />
+                </view>
+              </view>
+              <view class="text-ellipsis nickname">{{item.nickname}}</view>
+              <view class="text-ellipsis university">{{item.university || "****大学"}}</view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+  <van-tabs class="tab-container" active="{{ curTabIndex }}" bind:click="onTabClick" sticky swipeable animated>
+    <van-tab title="亮点">
+      <view class="highlights-container tab">
+        <block wx:for="{{activity.highlights}}" wx:key="index">
+          <view class="highlight-box">
+            <view class="flex title-row">
+              <image class="pink-divider" src="/images/pink-divider.png" mode="aspectFill" />
+              <view class="title">{{item.title}}</view>
+              <image class="pink-divider right" src="/images/pink-divider.png" mode="aspectFill" />
+            </view>
+            <rich-text class="rich-text content" nodes="{{item.content}}"></rich-text>
+            <block wx:for="{{item.images}}" wx:key="index" wx:for-item="imgUrl">
+              <view class='highlight-item-image-box'>
+                <image class="highlight-item-image" src="{{imgUrl}}" mode="widthFix" bind:tap="previewHighlightImage" data-url="{{imgUrl}}" />
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+    </van-tab>
+    <van-tab title="行程">
+      <view class="journey-container tab">
+        <!-- <view class="journey-title">
+          <text class="iconfont icon-travel"></text>
+          <text>行程简介</text>
+        </view> -->
+        <block wx:for="{{activity.journey}}" wx:key="index">
+          <view class="day">
+            <view class="flex activity-title-row ">
+              <view class="flex activity-duration">DAY{{index+1}}</view>
+              <text class="activity-name">{{item.title}}</text>
+            </view>
+            <view class="day-content">
+              <block wx:for="{{item.items}}" wx:key="index" wx:for-item="stage">
+                <view class="stage-title-row">
+                  <image class="activity-icon" src="{{TYPE_TO_ICON[stage.type]}}" mode="aspectFill" />
+                  <text class="stage-title">{{TYPE_TO_TITLE[stage.type] || stage.title}}</text>
+                </view>
+                <view class="flex stage-content">
+                  <rich-text class="rich-text content" nodes="{{stage.content}}"></rich-text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+        <view class="activity-description">{{JOURNEY_NOTE}}</view>
+      </view>
+    </van-tab>
+    <van-tab title="费用">
+      <view class="fee-tab tab">
+        <view class="discount-card fee-card">
+          <view class="title-row">
+            <image class="activity-icon" src="/images/activity-fee/discount.svg" mode="aspectFill" />
+            <text class="title">优惠政策</text>
+          </view>
+          <view class="content border">
+            <rich-text class="rich-text" wx:if="{{activity.favorablePolicy}}" nodes="{{activity.favorablePolicy}}" />
+            <text wx:else>
+              {{ activity.duration <= 1 ? DISCOUNT_POLICY['short'] : activity.duration > 3.5 ? DISCOUNT_POLICY['long'] : DISCOUNT_POLICY['medium'] }}
+            </text>
+          </view>
+        </view>
+        <view class="fee-include fee-card">
+          <view class="title-row">
+            <image class="activity-icon" src="/images/activity-fee/fee-include.svg" mode="aspectFill" />
+            <text class="title">费用包含</text>
+          </view>
+          <view class="content border">
+            <rich-text class="rich-text" nodes="{{activity.feeInclude}}"></rich-text>
+          </view>
+        </view>
+        <view class="fee-exclude fee-card">
+          <view class="title-row">
+            <image class="activity-icon" src="/images/activity-fee/fee-exclude.svg" mode="aspectFill" />
+            <text class="title">费用不含</text>
+          </view>
+          <view class="content">
+            <rich-text class="rich-text" nodes="{{activity.feeExclude}}"></rich-text>
+          </view>
+        </view>
+      </view>
+    </van-tab>
+    <van-tab title="须知">
+      <view class="notice-tab tab">
+        <!-- <view class="fee-cancel fee-card">
+          <view class="title-row">
+            <image class="activity-icon" src="/images/activity-notice/fee-cancel.svg" mode="aspectFill" />
+            <text class="title">退款</text>
+          </view>
+          <view class="content border">
+            <text>{{CANCEL_POLICY}}</text>
+          </view>
+        </view> -->
+        <view class="notice-card fee-card">
+          <view class="title-row">
+            <image class="activity-icon" src="/images/activity-notice/notice.svg" mode="aspectFill" />
+            <text class="title">须知</text>
+          </view>
+          <view class="content">
+            <van-cell border="{{false}}" title="{{ PROTOCOL_KEY_TO_LABEL['cancelPolicy'] }}" is-link bind:click="showPopupPannel" data-id="cancelPolicy"></van-cell>
+            <van-cell border="{{false}}" title="{{ PROTOCOL_KEY_TO_LABEL['bookingTips'] }}" is-link bind:click="showPopupPannel" data-id="bookingTips"></van-cell>
+            <van-cell border="{{false}}" title="{{ PROTOCOL_KEY_TO_LABEL['safetyTips'] }}" is-link bind:click="navToManuel" data-id="safetyTips"></van-cell>
+          </view>
+        </view>
+      </view>
+    </van-tab>
+  </van-tabs>
+  <!-- 领队们 -->
+  <view class="leaders-container" wx:if="{{ activity.tourSchedules[curTourIndex].leaders[0] }}">
+    <view class="title-row">领队们</view>
+    <block wx:for="{{ activity.tourSchedules[curTourIndex].leaders }}" wx:key="id">
+      <view class="people-card-content" bind:tap="navToUserDetail" data-id="{{item.id}}">
+        <view class="avatar-box">
+          <image class="avatar" src="{{item.avatar}}"></image>
+          <view wx:if="{{item.gender !== 0}}" class="icon-box {{item.gender === 1 ? 'man' : item.gender === 2 ? 'woman' : ''}} ">
+            <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[item.gender]}}" mode="aspectFill"/>
+          </view>
+        </view>
+        <view class="base-info-box">
+          <view class="nickname-row">
+            <text class="nickname">{{item.nickname}}</text>
+            <text class="university">{{item.university}}</text>
+          </view>
+          <view class="real-row">
+            " {{ item.signature || 'Ta还没有设置签名哦~' }} "
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <!-- 底部分割线 -->
+  <view class="page-bottom-space"></view>
+  <!-- 底部弹窗 -->
+  <van-popup z-index="200" show="{{ showPopup }}" position="bottom" bind:close="onPopupClose" round closeable>
+    <view class="bottom-popup-container">
+      <view class="title-row">{{popupContent.title}}</view>
+      <view class="content">
+        <rich-text class="rich-text" nodes="{{ popupContent.content }}"></rich-text>
+      </view>
+    </view>
+  </van-popup>
+  <!-- 下单栏 -->
+  <van-submit-bar custom-class="submit-bar" price="{{ activity.tourSchedules[curTourIndex].price }}" label=" " button-text="下单" decimal-length="2" bind:submit="joinActivity" disabled="{{!activity.tourSchedules[curTourIndex].valid || activity.tourSchedules[curTourIndex].members.length >= activity.tourSchedules[curTourIndex].maxPeople || activity.tourSchedules[curTourIndex].hasMe}}" tip="{{ !activity.tourSchedules[curTourIndex].valid ? '该团期已截止报名，请私聊客服尝试报名' : activity.tourSchedules[curTourIndex].members.length >= activity.tourSchedules[curTourIndex].maxPeople ? '报名人数已满，请选择其他团期' : activity.tourSchedules[curTourIndex].hasMe ?  '您已报名过该期活动，不可重复报名' : false }}" >
+    <image wx:if="{{userInfo.id === userInfo.managerId}}" class="shared-icon" src="/images/activity-baseinfo/share.svg" mode="aspectFill" bind:tap="shareActivity" />
+  </van-submit-bar>
+  <!-- toast -->
+  <van-toast id="van-toast" />
+</view>

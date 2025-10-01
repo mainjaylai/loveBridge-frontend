@@ -1,0 +1,59 @@
+<!-- index.wxml -->
+<view class="main">
+  <!-- 顶部区域（状态栏 + 导航栏） -->
+  <view class="top-section" style="height: {{navBarHeight}}px;">
+    <!-- 状态栏占位 -->
+    <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+    <!-- 导航栏内容 -->
+    <view class="nav-bar">
+      <image src="/images/logo.png" class="logo" mode="aspectFill"></image>
+    </view>
+  </view>
+  <!-- 页面内容 -->
+  <scroll-view class="scrollarea" scroll-y type="list">
+    <!-- <image class="a-week-cp" src="/images/aWeekCP.gif" bind:tap="navToCPDetail" mode="widthFix"></image> -->
+    <view class="activity-container">
+      <block wx:for="{{activities}}" wx:key="id">
+        <view class="base-card-new activity-item" bindtap="navigateToDetail" data-id="{{item.id}}">
+          <view class="activity-top">
+            <view class="left">
+              <view class="activity-title-row">
+                <view class="flex activity-duration">{{item.duration}}天</view>
+                <view class="text-ellipsis activity-name">{{item.title}}</view>
+              </view>
+              <view class="text-ellipsis activity-description">{{item.content}}</view>
+              <!-- <view class="activity-date">04月16日 周六</view> -->
+            </view>
+            <view class="primary-button activity-price {{item.valid ? '' : 'disabled'}}">
+              <view class="money">
+                {{ item.valid ? '报名中' : '已结束' }}
+                <!-- <text class="yuan">¥</text>
+                <text class="amount">{{item.lowestPrice}}</text> -->
+              </view>
+            </view>
+          </view>
+          <view class="activity-bottom">
+            <image class="activity-cover" src="{{item.cover||'https://mmbiz.qpic.cn/mmbiz_jpg/cBNNH55ySxbSKNFKJUiaZvSDIH3YFiaIcI67b2lSGKBiawO658IjApQ4oYKbn5hHtSnvibPUXN0gRjrZicqfShOLic8g/640?wx_fmt=jpeg&from=appmsg&tp=wxpic&wxfrom=5&wx_lazy=1&wx_co=1'}}" mode="aspectFill"></image>
+          </view>
+        </view>
+      </block>
+    </view>
+    <!-- center popup -->
+    <van-popup custom-class="custom-van-popup" show="{{ showPopup }}" bind:close="onPopupClose" closeable>
+      <view class="container">
+        <image class="coupon-img" src="https://gitee.com/mainjay/outdoor-image/raw/master/images/bg-get-coupon.svg" mode="widthFix" />
+        <view class="content">
+          <view class="money left">
+            <text class="yuan">¥</text>
+            <text class="amount">10</text>
+          </view>
+          <view class="right">
+            <view class="title">新用户专享</view>
+            <view class="description">购买抵扣，有效期180天</view>
+          </view>
+        </view>
+        <view class="gradient-button" bind:tap="navigateToEdit">完善信息再领¥10</view>
+      </view>
+    </van-popup>
+  </scroll-view>
+</view>

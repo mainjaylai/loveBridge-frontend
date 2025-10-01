@@ -1,0 +1,24 @@
+<view class="main">
+  <van-cell-group title="参加活动信息隐私设置">
+    <van-cell title="展示性别" center>
+      <view slot="">
+        <van-switch active-color="#07C160" checked="{{ genderShow }}" bind:change="onGenderShowChange" />
+      </view>
+    </van-cell>
+    <van-cell title="展示学校" center>
+      <view slot="">
+        <van-switch active-color="#07C160" checked="{{ universityShow }}" bind:change="onUniversityShowChange" />
+      </view>
+    </van-cell>
+    <van-cell title="展示年龄" center>
+      <view slot="">
+        <van-switch active-color="#07C160" checked="{{ birthdayShow }}" bind:change="onBirthdayShowChange" />
+      </view>
+    </van-cell>
+    <van-cell title="展示专业/职业" center>
+      <view slot="">
+        <van-switch active-color="#07C160" checked="{{ professionShow }}" bind:change="onProfessionShowChange" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+</view>

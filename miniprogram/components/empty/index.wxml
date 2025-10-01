@@ -1,0 +1,7 @@
+<view class="empty-container">
+  <!-- 图标 -->
+  <image src="{{icon}}" mode="aspectFit" class="empty-icon"></image>
+  
+  <!-- 提示文字 -->
+  <text class="empty-text">{{text}}</text>
+</view>
