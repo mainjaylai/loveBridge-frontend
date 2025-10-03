@@ -1,10 +1,7 @@
 import { get, put, post, uploadFile } from "./request";
 
-export function login(code: string, inviterId?: string) {
-  const url = inviterId
-    ? `/user/login-or-register?code=${code}&inviterId=${inviterId}`
-    : `/user/login-or-register?code=${code}`;
-  return get(url);
+export function login(code: string) {
+  return get(`/user/login-or-register?code=${code}`);
 }
 
 export function getUserInfo() {

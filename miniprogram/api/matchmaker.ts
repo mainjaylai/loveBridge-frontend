@@ -51,3 +51,7 @@ export function saveSingleInformation(data: any){
 export function searchSingleUser(data: any){
     return get(`/matchmaker/search-single-users?keyword=${data}`)
 }
+
+export function geteveryData(){
+    return get("/matchmaker/every-day-single-data")
+}

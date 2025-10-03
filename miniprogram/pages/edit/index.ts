@@ -12,10 +12,6 @@ import {
 } from "../../const/user";
 import {
   validatePhoneNumber,
-  validateIdCard,
-  validatePassport,
-  checkCredentialType,
-  formatTime4,
   formatTime11,
 } from "../../utils/util";
 import Toast from "../../miniprogram_npm/@vant/weapp/toast/toast";
@@ -38,10 +34,6 @@ const flattenUniversities = () => {
 // 扁平化大学列表，用于搜索和选择
 const FLATTENED_UNIVERSITIES = flattenUniversities();
 
-// 证件类型常量
-const CREDENTIAL_TYPE_IDCARD = "idcard";
-const CREDENTIAL_TYPE_PASSPORT = "passport";
-
 Page({
   data: {
     edited: false, // 是否修改了本地userInfo
@@ -53,8 +45,6 @@ Page({
     userBirthdayLabel: "", // 生日，展示
     birthdayPickerMinDate: new Date(1985, 0, 1).getTime(),
     birthdayPickerMaxDate: new Date(2010, 12, 31).getTime(),
-    selectedCredentialType: CREDENTIAL_TYPE_IDCARD, // 临时存储当前选择的证件类型，不会存储到数据库
-    userCredentialType: "中国居民身份证",
     pickerColumn: {
       gender: [
         { value: GENDER_MALE, label: "男" },
@@ -62,10 +52,6 @@ Page({
       ],
       education: EDUCATION,
       university: FLATTENED_UNIVERSITIES,
-      credentialType: [
-        { value: CREDENTIAL_TYPE_IDCARD, label: "中国居民身份证" },
-        { value: CREDENTIAL_TYPE_PASSPORT, label: "护照" },
-      ],
       starSign: STAR_SIGN,
       mbti: MBTI,
     },
@@ -91,11 +77,6 @@ Page({
     const app = getApp<IAppOption>();
     const userInfo = JSON.parse(JSON.stringify(app.globalData.userInfo));
 
-    // 根据idCard判断证件类型
-    const credentialType = userInfo.idCard
-      ? checkCredentialType(userInfo.idCard)
-      : CREDENTIAL_TYPE_IDCARD;
-
     this.setData({
       userInfo: userInfo,
       userGender:
@@ -104,9 +85,6 @@ Page({
           : userInfo.gender === GENDER_FEMALE
           ? "女"
           : "",
-      selectedCredentialType: credentialType,
-      userCredentialType:
-        credentialType === CREDENTIAL_TYPE_PASSPORT ? "护照" : "中国居民身份证",
       userBirthday: userInfo.birthday
         ? parseInt(userInfo.birthday)
         : USER_BIRTHDAY_PLACEHOLDER,
@@ -232,15 +210,6 @@ Page({
         "gender",
         this.data.pickerColumn[curProperty][e.detail.index].value
       );
-    } else if (curProperty === "credentialType") {
-      const type = this.data.pickerColumn[curProperty][e.detail.index].value;
-      this.setData({
-        selectedCredentialType: type,
-        userCredentialType:
-          this.data.pickerColumn[curProperty][e.detail.index].label,
-        // 当切换证件类型时，清空idCard字段
-      });
-      this.editLocalUserInfo("idCard", "");
     } else {
       this.editLocalUserInfo(
         curProperty,
@@ -333,18 +302,6 @@ Page({
       !validatePhoneNumber(this.data.userInfo.phone)
     ) {
       errMessage = "【手机号码】格式错误";
-    } else if (
-      this.data.selectedCredentialType === CREDENTIAL_TYPE_IDCARD &&
-      this.data.userInfo.idCard &&
-      !validateIdCard(this.data.userInfo.idCard)
-    ) {
-      errMessage = "【身份证号码】格式错误";
-    } else if (
-      this.data.selectedCredentialType === CREDENTIAL_TYPE_PASSPORT &&
-      this.data.userInfo.idCard &&
-      !validatePassport(this.data.userInfo.idCard)
-    ) {
-      errMessage = "【护照号码】格式错误";
     }
     // if (!this.data.userInfo.realName) {
     //   errMessage = "【真实姓名】不能为空";
@@ -379,25 +336,6 @@ Page({
   onSave() {
     if (!this.check()) {
       return;
-    }
-
-    // 检查主理人是否尝试修改学校信息;
-    if (app.globalData.userInfo.id === app.globalData.userInfo.managerId) {
-      // 如果是主理人，且尝试修改学校信息，且初始university不为空
-      if (
-        app.globalData.userInfo.university !== this.data.userInfo.university &&
-        app.globalData.userInfo.university !== ""
-      ) {
-        Toast({
-          type: "fail",
-          message: "主理人不能修改学校信息",
-          duration: 1000,
-        });
-        this.setData({
-          "userInfo.university": app.globalData.userInfo.university,
-        });
-        return;
-      }
     }
 
     updateUserInfo(this.data.userInfo).then((res: any) => {

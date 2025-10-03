@@ -1,37 +1,14 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/customIndex/index",
-    "pages/playground/index",
-    "pages/publishPost/index",
-    "pages/postDetail/index",
     "pages/profile/index",
     "pages/edit/index",
     "pages/detail/index",
-    "pages/customDetail/index",
-    "pages/publish/index",
-    "pages/orders/index",
-    "pages/order/index",
-    "pages/relay/index",
     "pages/about/index",
-    "pages/coupons/index",
-    "pages/wallet/index",
-    "pages/feedback/index",
     "pages/settings/index",
-    "pages/myTrip/index",
-    "pages/map/index",
-    "pages/refundDetail/index",
-    "pages/friends/index",
-    "pages/manuel/index",
-    "pages/myPosts/index",
     "pages/publicProfile/index",
     "pages/label/index",
-    "pages/myActivities/index",
-    "pages/hotPosts/index",
     "pages/cpDetail/index",
-    "pages/searchPosts/index",
-    "pages/moneyRecord/index",
-    "pages/cpPool/index",
     "pages/cpUserDetail/index",
     "pages/singleInfo/index"
   ],
@@ -63,13 +40,7 @@
         "pagePath": "pages/index/index",
         "iconPath": "images/nav/home-off.png",
         "selectedIconPath": "images/nav/home-on.png",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/playground/index",
-        "iconPath": "images/nav/play-off.png",
-        "selectedIconPath": "images/nav/play-on.png",
-        "text": "广场"
+        "text": "cp池"
       },
       {
         "pagePath": "pages/profile/index",

@@ -23,7 +23,7 @@
       </view>
     </van-cell>
   </van-cell-group>
-  <van-cell-group title="实名信息（报名活动必填，仅用作购买保险）">
+  <van-cell-group title="实名信息（保密）">
     <van-cell title="真实姓名" center>
       <view slot="">
         <van-field class="form-input" value="{{ userInfo.realName }}" placeholder="请输入真实姓名" bind:change="onInputChange" data-id="realName" border="{{ false }}" input-align="right" maxlength="{{10}}" />
@@ -32,12 +32,6 @@
     <van-cell title="手机号码" center>
       <view slot="">
         <van-field class="form-input" type="number" value="{{ userInfo.phone }}" placeholder="请输入真实号码" bind:change="onInputChange" data-id="phone" border="{{ false }}" input-align="right" maxlength="{{15}}" />
-      </view>
-    </van-cell>
-    <van-cell value-class="van-cell-value" title="证件类型" value="{{userCredentialType}}" is-link bind:click="showPopupPannel" data-id="credentialType"></van-cell>
-    <van-cell title="证件号码" center>
-      <view slot="">
-        <van-field class="form-input" type="{{selectedCredentialType === 'idcard' ? 'idcard' : 'text'}}" value="{{ userInfo.idCard }}" placeholder="{{selectedCredentialType === 'idcard' ? '请输入身份证号码' : '请输入护照号码'}}" bind:change="onInputChange" data-id="idCard" border="{{ false }}" input-align="right" maxlength="{{20}}" />
       </view>
     </van-cell>
   </van-cell-group>
@@ -57,7 +51,7 @@
   </van-cell-group>
   <view class="button-box">
     <view class="button primary-button" bind:tap="onSave">保存</view>
-    <view class="button secondary-button" bind:tap="onPreview">预览</view>
+    <!-- <view class="button secondary-button" bind:tap="onPreview">预览</view> -->
   </view>
   <view class="page-bottom-space"></view>
   <!-- bottom popup -->
@@ -106,21 +100,5 @@
     </block>
   </van-popup>
   <!-- center popup -->
-  <van-popup custom-class="coupon-van-popup" show="{{ showPopupCenter }}" bind:close="onPopupCenterClose" closeable>
-    <view class="container">
-      <image class="coupon-img" src="https://gitee.com/mainjay/outdoor-image/raw/master/images/bg-get-coupon.svg" mode="widthFix" />
-      <view class="content">
-        <view class="money left">
-          <text class="yuan">¥</text>
-          <text class="amount">10</text>
-        </view>
-        <view class="right">
-          <view class="title">完整注册用户专享</view>
-          <view class="description">购买抵扣，有效期180天</view>
-        </view>
-      </view>
-      <view class="gradient-button" bind:tap="navigateToIndex">去使用</view>
-    </view>
-  </van-popup>
   <van-toast id="van-toast" />
 </view>

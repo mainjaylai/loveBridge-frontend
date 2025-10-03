@@ -1,8 +1,0 @@
-{
-    "usingComponents": {
-        "van-toast": "../../miniprogram_npm/@vant/weapp/toast/index"
-    },
-    "navigationBarTitleText": "48小时热帖榜",
-    "enablePullDownRefresh": true,
-    "backgroundTextStyle": "dark"
-}

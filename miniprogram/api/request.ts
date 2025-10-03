@@ -8,8 +8,8 @@
 /**
  * 服务器根路径
  */
-export const BASE_URL = "https://backend.qingshanoutdoor.top/test";
-// export const BASE_URL = "http://localhost:8080";
+// export const BASE_URL = "https://backend.qingshanoutdoor.top/test";
+export const BASE_URL = "http://localhost:8080";
 export const IS_TEST = true;
 
 export const PROD_URL = "https://backend.qingshanoutdoor.top/outdoor"; // 不要改他，测试和生产环境都用这个

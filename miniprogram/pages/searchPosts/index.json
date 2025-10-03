@@ -1,7 +1,0 @@
-{
-    "usingComponents": {
-        "custom-search": "../../components/search/index",
-        "van-toast": "@vant/weapp/toast/index"
-    },
-    "navigationBarTitleText": "搜索帖子"
-}

@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "van-loading": "../../miniprogram_npm/@vant/weapp/loading/index"
-  },
-  "navigationBarTitleText": "零钱明细",
-  "enablePullDownRefresh": true
-} 
