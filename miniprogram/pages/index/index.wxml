@@ -1,6 +1,6 @@
 <view class="main">
   <!-- 顶部区域 -->
-  <view class="header-container">
+  <view class="header-container" wx:if="{{myUser.role === 3 || myUser.role === 2}}">
     <!-- 搜索和筛选 -->
     <view class="search-filter-container">
       <view class="search-box">

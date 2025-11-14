@@ -9,6 +9,12 @@ const EDUCATION_OPTIONS = ['本科', '硕士', '博士'];
 const STATUS_OPTIONS = ['在读', '已工作', '其他'];
 const JOB_TYPE_OPTIONS = ['私企', '国央企', '事业单位', '外企', '公务员/军官等公职人员', '个人创业', '其他'];
 
+// 新增：伴侣要求选项
+const PARTNER_EDUCATION_OPTIONS = ['不限', '本科及以上', '硕士及以上', '博士及以上'];
+const PARTNER_STATUS_OPTIONS = ['不限', '在读', '工作'];
+const PARTNER_INCOME_OPTIONS = ['不限', '10w+', '30w+', '60w+', '100w+'];
+const REMARKS_OPTIONS = ['未脱单，希望在共享池展示自己', '未脱单，不希望在共享池展示自己', '已脱单，希望在共享池展示自己', '已脱单，不希望在共享池展示自己'];
+
 Page({
   data: {
     formData: {
@@ -40,12 +46,26 @@ Page({
       jobType: '',
       jobTypeLabel: '',
       otherJobType: false,
-      jobTitle: '',
       annualIncome: '',
       otherStatusDesc: '',
       aboutMe: '',
       partnerRequirements: '',
+      familyBackground: "",
+
+      // 新增：伴侣要求字段
+      partnerHeightMin: '',
+      partnerHeightMax: '',
+      partnerEducationRange: '',
+      partnerEducationRangeLabel: '',
+      partnerCurrentStatus: '',
+      partnerCurrentStatusLabel: '',
+      partnerHometown: '',
+      partnerAnnualIncomeOption: '',
+      partnerAnnualIncomeOptionLabel: '',
+      partnerResidence: '',
       isVerified: false,
+      remarks: "",
+      remarksLabel: "",
       photos: [] as string[],
     },
     fileList: [] as Array<{ url: string }>,
@@ -60,7 +80,6 @@ Page({
     const app = getApp<IAppOption>();
     const userInfo = app.globalData.userInfo;
 
-    // 判断用户是否完善了真实姓名、性别、手机号
     if (!userInfo.realName || !userInfo.gender || !userInfo.phone) {
       Toast({
         message: '请先完善真实姓名、性别、手机号',
@@ -80,14 +99,12 @@ Page({
       if (res.data && res.data.data) {
         this.initForm(res.data.data);
       } else {
-        // 新用户无数据，使用全局用户信息填充
         this.setData({
           'formData.realName': userInfo.realName,
           'formData.phone': userInfo.phone,
         });
       }
     } catch (e) {
-      // 新用户无数据，使用全局用户信息填充
       this.setData({
         'formData.realName': userInfo.realName,
         'formData.phone': userInfo.phone,
@@ -103,7 +120,6 @@ Page({
 
     const formData = { ...this.data.formData, ...data } as { [key: string]: any };
 
-    // 处理label
     formData.orientationLabel = data.orientation || '';
     formData.relationshipViewLabel = data.relationshipView || '';
     formData.maritalStatusLabel = data.maritalStatus || '';
@@ -114,11 +130,36 @@ Page({
     formData.birthdayLabel = data.birthday ? `${data.birthday}` : '';
     formData.otherJobType = data.jobType === '其他';
 
-    // 处理其他字段
     formData.weight = data.weight ? String(data.weight) : '';
     formData.height = data.height ? String(data.height) : '';
     formData.birthday = data.birthday ? String(data.birthday) : '';
     formData.isVerified = String(data.isVerified);
+    formData.familyBackground = data.familyBackground || '';
+
+    // 新增：处理伴侣身高区间
+    if (data.partnerHeightRange) {
+      try {
+        const heightRange = typeof data.partnerHeightRange === 'string'
+          ? JSON.parse(data.partnerHeightRange)
+          : data.partnerHeightRange;
+        formData.partnerHeightMin = heightRange[0] ? String(heightRange[0]) : '';
+        formData.partnerHeightMax = heightRange[1] ? String(heightRange[1]) : '';
+      } catch (e) {
+        console.error('Parse partnerHeightRange error:', e);
+      }
+    }
+
+    // 新增：处理伴侣其他要求
+    formData.partnerEducationRange = data.partnerEducationRange || '';
+    formData.partnerEducationRangeLabel = data.partnerEducationRange || '';
+    formData.partnerCurrentStatus = data.partnerCurrentStatus || '';
+    formData.partnerCurrentStatusLabel = data.partnerCurrentStatus || '';
+    formData.partnerHometown = data.partnerHometown || '';
+    formData.partnerAnnualIncomeOption = data.partnerAnnualIncomeOption || '';
+    formData.partnerAnnualIncomeOptionLabel = data.partnerAnnualIncomeOption || '';
+    formData.partnerResidence = data.partnerResidence || '';
+    formData.remarks = data.remarks || REMARKS_OPTIONS[0];
+    formData.remarksLabel = data.remarks || REMARKS_OPTIONS[0];
 
     const fileList = data.photos?.map((p: string) => ({ url: p, isImage: true })) || [];
 
@@ -182,6 +223,23 @@ Page({
         columns = this.getYearColumns();
         title = '请选择出生年份';
         break;
+      // 新增：伴侣要求选择器
+      case 'partnerEducationRange':
+        columns = PARTNER_EDUCATION_OPTIONS;
+        title = '请选择学历要求';
+        break;
+      case 'partnerCurrentStatus':
+        columns = PARTNER_STATUS_OPTIONS;
+        title = '请选择状态要求';
+        break;
+      case 'partnerAnnualIncomeOption':
+        columns = PARTNER_INCOME_OPTIONS;
+        title = '请选择收入要求';
+        break;
+      case 'remarks':
+        columns = REMARKS_OPTIONS;
+        title = '请选择备注';
+        break;
       default:
         break;
     }
@@ -200,7 +258,6 @@ Page({
   },
 
   onPickerConfirm(e: any) {
-    // 添加空值检查
     if (!e || !e.detail) {
       console.error('onPickerConfirm: Invalid event object');
       return;
@@ -247,6 +304,23 @@ Page({
         update.birthday = label;
         update.birthdayLabel = label;
         break;
+      // 新增：伴侣要求字段更新
+      case 'partnerEducationRange':
+        update.partnerEducationRange = label === '不限' ? '' : label;
+        update.partnerEducationRangeLabel = label;
+        break;
+      case 'partnerCurrentStatus':
+        update.partnerCurrentStatus = label === '不限' ? '' : label;
+        update.partnerCurrentStatusLabel = label;
+        break;
+      case 'partnerAnnualIncomeOption':
+        update.partnerAnnualIncomeOption = label === '不限' ? '' : label;
+        update.partnerAnnualIncomeOptionLabel = label;
+        break;
+      case 'remarks':
+        update.remarks = label;
+        update.remarksLabel = label;
+        break;
       default:
         break;
     }
@@ -280,7 +354,6 @@ Page({
   },
 
   afterRead(e: any) {
-    // 添加空值检查
     if (!e || !e.detail || !e.detail.file) {
       console.error('afterRead: Invalid event object or missing file');
       return;
@@ -289,7 +362,6 @@ Page({
     const file = e.detail.file;
     const currentFileList = this.data.fileList || [];
 
-    // 确保 file 是数组格式
     const fileArray = Array.isArray(file) ? file : [file];
     const fileList = currentFileList.concat(fileArray);
 
@@ -297,7 +369,6 @@ Page({
   },
 
   onDeleteImage(e: any) {
-    // 添加空值检查
     if (!e || !e.detail || typeof e.detail.index !== 'number') {
       console.error('onDeleteImage: Invalid event object or missing index');
       return;
@@ -333,17 +404,30 @@ Page({
   async onSubmit() {
     const formData = { ...this.data.formData } as { [key: string]: any };
 
-    // 校验
-    const requiredFields = [
-      'realName', 'phone', 'wechat', 'gender', 'hometown', 'preferredCity',
-      'orientation', 'relationshipView', 'maritalStatus', 'birthday',
-      'height', 'weight', 'education', 'university', 'currentStatus', 'major',
-      'aboutMe', 'partnerRequirements'
-    ];
+    const requiredFields = {
+      'realName': "真实姓名",
+      "phone": "手机号",
+      "wechat": "微信号",
+      "gender": "性别",
+      "hometown": "家乡",
+      "preferredCity": "打算定居的城市",
+      "orientation": "性取向",
+      "relationshipView": "婚恋观",
+      "maritalStatus": "婚姻状态",
+      "birthday": "出生年份",
+      "height": "身高",
+      "weight": "体重",
+      "education": "学历",
+      "university": "学校",
+      "currentStatus": "目前状态",
+      "aboutMe": "关于我",
+      "familyBackground": "家庭情况",
+    };
 
-    for (const field of requiredFields) {
+    for (const key in requiredFields) {
+      const field = key as keyof typeof requiredFields;
       if (!formData[field] || (typeof formData[field] === 'string' && !formData[field].trim())) {
-        Toast.fail('请完整填写所有必填项');
+        Toast.fail(`请完整填写所有必填项，${requiredFields[field]}不能为空`);
         return;
       }
     }
@@ -375,22 +459,34 @@ Page({
         return r;
       });
 
-      // 构造符合后端UpdateOwnSingleInformationRequest结构的数据
+      // 新增：构造身高区间
+      const partnerHeightRange = [];
+      if (formData.partnerHeightMin) {
+        partnerHeightRange.push(parseInt(formData.partnerHeightMin));
+      }
+      if (formData.partnerHeightMax) {
+        partnerHeightRange.push(parseInt(formData.partnerHeightMax));
+      }
+
       const submitData = {
         ...formData,
         birthday: parseInt(formData.birthday || "0"),
         height: parseInt(formData.height || "0"),
         weight: parseInt(formData.weight || "0"),
         isVerified: formData.isVerified === 'true',
-        photos: imgs
+        photos: imgs,
+        // 新增：伴侣要求字段
+        partnerHeightRange: partnerHeightRange.length > 0 ? JSON.stringify(partnerHeightRange) : null,
+        partnerEducationRange: formData.partnerEducationRange || '',
+        partnerCurrentStatus: formData.partnerCurrentStatus || '',
+        partnerHometown: formData.partnerHometown || '',
+        partnerAnnualIncomeOption: formData.partnerAnnualIncomeOption || '',
+        partnerResidence: formData.partnerResidence || '',
+        remarks: formData.remarks || '',
+        remarksLabel: formData.remarksLabel || '',
       };
 
       await saveSingleInformation(submitData as any);
-      // wx.showToast({
-      //   title: '保存成功',
-      //   icon: 'success',
-      //   duration: 1200,
-      // });
       Toast.success('保存成功');
     } catch (error) {
       console.error('Submit error:', error);

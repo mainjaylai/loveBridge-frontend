@@ -17,7 +17,7 @@
     <view class="main-info">
       <view class="avatar-ring">
         <view class="avatar-box">
-          <image class="avatar" src="{{userInfo.avatar || DEFAULT_USER_AVATAR}}"></image>
+          <image class="avatar" src="{{userInfo.user.avatar || DEFAULT_USER_AVATAR}}"></image>
           <view wx:if="{{userInfo.gender !== 0}}" class="icon-box {{userInfo.gender === 1 ? 'man' : userInfo.gender === 2 ? 'woman' : ''}} ">
             <image class="icon" src="{{GENDER_NUMBER_TO_LABEL[userInfo.gender]}}" mode="aspectFill" />
           </view>
@@ -26,7 +26,10 @@
       <view class="base-info-box">
         <view class="nickname-row">
           <text class="nickname">{{userInfo.nickName || DEFAULT_USER_NICKNAME}}</text>
-          <view wx:if="{{userInfo.isVerified}}" class="verified-badge">已认证</view>
+          <view wx:if="{{userInfo.user.mbti}}" class="verified-badge">{{userInfo.user.mbti}}</view>
+          <view wx:if="{{userInfo.user.starSign}}" class="verified-badge" style="margin-left: 10rpx">
+            {{userInfo.user.starSign}}
+          </view>
         </view>
         <view class="real-row">
           <text class="item">{{userInfo.birthday || '**'}}年</text>
@@ -49,7 +52,7 @@
         <view class="info-label">身高</view>
         <view class="info-value">{{userInfo.height}}cm</view>
       </view>
-      <view class="info-item" wx:if="{{userInfo.weight}}">
+      <view class="info-item" wx:if="{{userInfo.weight}}" wx:if="{{myUser.role === 3 || myUser.role === 2}}">
         <view class="info-label">体重</view>
         <view class="info-value">{{userInfo.weight}}kg</view>
       </view>
@@ -75,12 +78,8 @@
       </view>
     </view>
     <!-- 工作信息 -->
-    <view class="info-card">
+    <view class="info-card" wx:if="{{myUser.role === 3 || myUser.role === 2}}">
       <view class="card-title">工作信息</view>
-      <view class="info-item" wx:if="{{userInfo.jobTitle}}">
-        <view class="info-label">工作方向</view>
-        <view class="info-value">{{userInfo.jobTitle}}</view>
-      </view>
       <view class="info-item" wx:if="{{userInfo.jobType}}">
         <view class="info-label">工作类型</view>
         <view class="info-value">{{userInfo.jobType}}</view>
@@ -89,16 +88,6 @@
         <view class="info-label">年收入</view>
         <view class="info-value">{{userInfo.annualIncome}}</view>
       </view>
-    </view>
-    <!-- 个人介绍 -->
-    <view class="info-card" wx:if="{{userInfo.aboutMe}}">
-      <view class="card-title">关于我</view>
-      <view class="info-text">{{userInfo.aboutMe}}</view>
-    </view>
-    <!-- 伴侣要求 -->
-    <view class="info-card" wx:if="{{userInfo.partnerRequirements}}">
-      <view class="card-title">伴侣要求</view>
-      <view class="info-text">{{userInfo.partnerRequirements}}</view>
     </view>
     <!-- 家乡和居住信息 -->
     <view class="info-card">
@@ -112,8 +101,33 @@
         <view class="info-value">{{userInfo.preferredCity}}</view>
       </view>
     </view>
-    <!-- 婚恋观和状况 -->
+    <!-- 个人介绍 -->
+    <view class="info-card" wx:if="{{userInfo.aboutMe}}">
+      <view class="card-title">关于我</view>
+      <view class="info-text">{{userInfo.aboutMe}}</view>
+    </view>
+    <!-- 伴侣要求 -->
     <view class="info-card">
+      <view class="card-title">伴侣要求</view>
+      <view class="info-item" wx:if="{{userInfo.partnerHeightRange}}">
+        <view class="info-label">希望TA身高</view>
+        <view class="info-value">{{userInfo.partnerHeightRange}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.partnerResidence}}">
+        <view class="info-label">希望TA常住城市</view>
+        <view class="info-value">{{userInfo.partnerResidence}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.partnerEducationRange}}">
+        <view class="info-label">希望TA学历</view>
+        <view class="info-value">{{userInfo.partnerEducationRange}}</view>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.partnerRequirements}}">
+        <view class="info-label">希望TA</view>
+        <view class="info-text">{{userInfo.partnerRequirements}}</view>
+      </view>
+    </view>
+    <!-- 婚恋观和状况 -->
+    <view class="info-card" wx:if="{{myUser.role === 3 || myUser.role === 2}}">
       <view class="card-title">婚恋观和状况</view>
       <view class="info-item" wx:if="{{userInfo.relationshipView}}">
         <view class="info-label">婚恋观</view>
@@ -125,7 +139,7 @@
       </view>
     </view>
     <!-- 照片 -->
-    <view class="info-card" wx:if="{{userInfo.photos && userInfo.photos.length}}">
+    <view class="info-card" wx:if="{{userInfo.isVerified}}">
       <view class="card-title">我的照片</view>
       <view class="photo-list">
         <image wx:for="{{userInfo.photos}}" wx:key="index" src="{{item}}" class="photo-item" mode="aspectFill" bind:tap="previewImage" data-url="{{item}}"></image>
